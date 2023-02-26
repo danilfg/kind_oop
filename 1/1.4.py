@@ -1,5 +1,32 @@
 # 5
-
+# class Translator:
+#     dictionary = dict()
+#
+#     def add(self, eng, rus):
+#         self.dictionary.setdefault(eng, [])
+#         if rus not in self.dictionary[eng]:
+#             self.dictionary[eng].append(rus)
+#
+#     def remove(self, eng):
+#         self.dictionary.pop(eng, False)
+#
+#     def translate(self, eng):
+#         return self.dictionary[eng]
+#
+#
+# tr = Translator()
+# tr= Translator()
+# tr.add('tree', 'дерево')
+# tr.add('car', 'машина')
+# tr.add('car', 'автомобиль')
+# tr.add('leaf', 'лист')
+# tr.add('river', 'река')
+# tr.add('go', 'идти')
+# tr.add('go', 'ехать')
+# tr.add('go', 'ходить')
+# tr.add('milk', 'молоко')
+# tr.remove('car')
+# print(*tr.translate('go'))
 # 4
 # import sys
 #
