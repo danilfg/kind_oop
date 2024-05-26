@@ -49,7 +49,7 @@ d = Dimensions(10.5, 20.1, 30)
 d.a = 8
 d.b = 15
 a, b, c = d.a, d.b, d.c  # a=10.5, b=15, c=30
-d.MAX_DIMENSION = 10  # исключение AttributeError
+# d.MAX_DIMENSION = 10  # исключение AttributeError
 # 6
 # class Circle:
 #     def __init__(self, x, y, radius):
