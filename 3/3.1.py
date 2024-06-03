@@ -1,54 +1,81 @@
-# 7
-class Dimensions:
-    MIN_DIMENSION = 10
-    MAX_DIMENSION = 1000
-
-    def __init__(self, a, b, c):
-        self.a = a
-        self.b = b
-        self.c = c
-
-    @property
-    def a(self):
-        return self.__a
-
-    @a.setter
-    def a(self, value):
-        if type(value) in (int, float) and self.check_dim(value):
-            self.__a = value
-
-    @property
-    def b(self):
-        return self.__b
-
-    @b.setter
-    def b(self, value):
-        if type(value) in (int, float) and self.check_dim(value):
-            self.__b = value
-
-    @property
-    def c(self):
-        return self.__c
-
-    @c.setter
-    def c(self, value):
-        if type(value) in (int, float) and self.check_dim(value):
-            self.__c = value
-
-    @classmethod
-    def check_dim(cls, value):
-        return True if cls.MIN_DIMENSION <= value <= cls.MAX_DIMENSION else False
-
-    def __setattr__(self, key, value):
-        if key in ('MIN_DIMENSION', 'MAX_DIMENSION'):
-            raise AttributeError("Менять атрибуты MIN_DIMENSION и MAX_DIMENSION запрещено.")
-        object.__setattr__(self, key, value)
+# 0
+from typing import Any
 
 
-d = Dimensions(10.5, 20.1, 30)
-d.a = 8
-d.b = 15
-a, b, c = d.a, d.b, d.c  # a=10.5, b=15, c=30
+class Point:
+    MAX_COORD = 100
+    MIN_COORD = 0
+
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def set_coord(self, x, y):
+        if self.MIN_COORD <= x <= self.MAX_COORD:
+            self.x = x
+            self.y = y
+
+    def __getattribute__(self, item):
+        print("__getattribute__")
+        return object.__getattribute__(self. item)
+
+
+pt1 = Point(1, 2)
+pt2 = Point(10, 20)
+a = pt1.x
+
+
+# # 7
+# class Dimensions:
+#     MIN_DIMENSION = 10
+#     MAX_DIMENSION = 1000
+
+#     def __init__(self, a, b, c):
+#         self.a = a
+#         self.b = b
+#         self.c = c
+
+#     @property
+#     def a(self):
+#         return self.__a
+
+#     @a.setter
+#     def a(self, value):
+#         if type(value) in (int, float) and self.check_dim(value):
+#             self.__a = value
+
+#     @property
+#     def b(self):
+#         return self.__b
+
+#     @b.setter
+#     def b(self, value):
+#         if type(value) in (int, float) and self.check_dim(value):
+#             self.__b = value
+
+#     @property
+#     def c(self):
+#         return self.__c
+
+#     @c.setter
+#     def c(self, value):
+#         if type(value) in (int, float) and self.check_dim(value):
+#             self.__c = value
+
+#     @classmethod
+#     def check_dim(cls, value):
+#         return True if cls.MIN_DIMENSION <= value <= cls.MAX_DIMENSION else False
+
+#     def __setattr__(self, key, value):
+#         if key in ('MIN_DIMENSION', 'MAX_DIMENSION'):
+#             raise AttributeError("Менять атрибуты MIN_DIMENSION и MAX_DIMENSION запрещено.")
+#         object.__setattr__(self, key, value)
+
+
+# d = Dimensions(10.5, 20.1, 30)
+# d.a = 8
+# d.b = 15
+# a, b, c = d.a, d.b, d.c  # a=10.5, b=15, c=30
 # d.MAX_DIMENSION = 10  # исключение AttributeError
 # 6
 # class Circle:
