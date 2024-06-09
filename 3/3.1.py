@@ -1,28 +1,130 @@
-# 0
-from typing import Any
+# 8
+import time
+
+class GeyserClassic:
+    MAX_DATE_FILTER = 100
+
+    def __init__(self):
+        self.filter_class = ('Mechanical', 'Aragon', 'Calcium')
+        self.filters = {(1, self.filter_class[0]): None, 
+                        (2, self.filter_class[1]): None, 
+                        (3, self.filter_class[2]): None}
+
+    def add_filter(self, slot_num, filter):
+        key = (slot_num, filter.__class__.__name__)
+        if key in self.filters and not self.filters[key]:
+            self.filters[key] = filter
+
+    def remove_filter(self, slot_num):
+        if type(slot_num) == int and 1 <= slot_num <= 2:
+            key  = (slot_num, self.filter_class[slot_num - 1])
+            if key in self.filters:
+                self.filters[key] = None
+
+    def get_filters(self):
+        return tuple(self.filters.values())
+
+    def water_on(self):
+        end = time.time()
+        for f in self.filters.values():
+                if f is None:
+                    return False
+                start = f.date
+                if end - start > self.MAX_DATE_FILTER:
+                    return False
+                
+        return True
+    
+
+class Mechanical:
+    def __init__(self, date):
+        self.date = date
+
+    def __setattr__(self, key, value):
+        if key == 'date' and key in self.__dict__:
+            return
+        super().__setattr__(key, value) # чтобы создать элемент, если еще не создали
+
+    
+class Aragon:
+    def __init__(self, date):
+        self.date = date
+
+    def __setattr__(self, key, value):
+        if key == 'date' and key in self.__dict__:
+            return
+        super().__setattr__(key, value) # чтобы создать элемент, если еще не создали
 
 
-class Point:
-    MAX_COORD = 100
-    MIN_COORD = 0
+class Calcium:
+    def __init__(self, date):
+        self.date = date
 
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-    def set_coord(self, x, y):
-        if self.MIN_COORD <= x <= self.MAX_COORD:
-            self.x = x
-            self.y = y
-
-    def __getattribute__(self, item):
-        print("__getattribute__")
-        return object.__getattribute__(self. item)
+    def __setattr__(self, key, value):
+        if key == 'date' and key in self.__dict__:
+            return
+        super().__setattr__(key, value) # чтобы создать элемент, если еще не создали
 
 
-pt1 = Point(1, 2)
-pt2 = Point(10, 20)
-a = pt1.x
+my_water = GeyserClassic()
+my_water.add_filter(1, Mechanical(time.time()))
+my_water.add_filter(2, Aragon(time.time()))
+w = my_water.water_on() # False
+my_water.add_filter(3, Calcium(time.time()))
+w = my_water.water_on() # True
+f1, f2, f3 = my_water.get_filters()  # f1, f2, f3 - ссылки на соответствующие объекты классов фильтров
+my_water.add_filter(3, Calcium(time.time())) # повторное добавление в занятый слот невозможно
+my_water.add_filter(2, Calcium(time.time())) # добавление в "чужой" слот также невозможно
+
+
+# # 0
+# from typing import Any
+
+
+# class Point:
+#     MAX_COORD = 100
+#     MIN_COORD = 0
+
+#     def __init__(self, x, y):
+#         self.x = x
+#         self.y = y
+
+#     def set_coord(self, x, y):
+#         if self.MIN_COORD <= x <= self.MAX_COORD:
+#             self.x = x
+#             self.y = y
+
+#     def __getattribute__(self, item): # Вызывается при получении свойства класса с именем item
+#         if item == "x":
+#             raise ValueError("access error")
+#         else:
+#             # print("__getattribute__")
+#             return object.__getattribute__(self, item)
+
+#     def __setattr__(self, key, value): # Вызывается при изменении свойства key класса
+#         if key == "z":
+#             raise AttributeError("недлопустимое значение")
+#         else:
+#             # print("__setattr__")
+#             object.__setattr__(self, key, value)
+#             # self.__dict__[key] = value
+
+#     def __getattr__(self, item): # Вызывается при получении несуществующего свойства item класса
+#         # print("__getattr__: " + item)
+#         return False
+
+#     def __delattr__(self, item): # Вызывается при удалении свойства item (не выжно существует оно или нет)
+#         print("__delattr__: " + item)
+#         object.__delattr__(self, item)
+
+# pt1 = Point(1, 2)
+# pt2 = Point(10, 20)
+# # a = pt1.x
+# # pt1.z = 2
+# print(pt1.yy)
+# del pt1.x
+# print(pt1.__dict__)
+
 
 
 # # 7
