@@ -1,34 +1,51 @@
-# 7
-class Handler:
-    def __init__(self, methods):
-        self.__methods = methods
+# 8
+class InputDigits:
+    def __init__(self, func):
+        self.__fn = func
 
-    def __call__(self, func):
-        def wrapper(request, *args, **kwargs):
-            if request.setdefault('method', 'GET') and request["method"] in self.__methods:
-                return self.__getattribute__(request['method'].lower())(func, request)
-            return
-        return wrapper
+    def __call__(self):
+        res = self.__fn()
+        return list(map(int, res.split()))
 
-    def get(self, func, request, *args, **kwargs):
-        return f"GET: {func(request)}"
+
+@InputDigits
+def input_dg():
+    return input()
+
+t = input_dg()
+print(t)
+
+# # 7
+# class Handler:
+#     def __init__(self, methods):
+#         self.__methods = methods
+
+#     def __call__(self, func):
+#         def wrapper(request, *args, **kwargs):
+#             if request.setdefault('method', 'GET') and request["method"] in self.__methods:
+#                 return self.__getattribute__(request['method'].lower())(func, request)
+#             return
+#         return wrapper
+
+#     def get(self, func, request, *args, **kwargs):
+#         return f"GET: {func(request)}"
         
-    def post(self, func, request, *args, **kwargs):
-        return f"POST: {func(request)}"
+#     def post(self, func, request, *args, **kwargs):
+#         return f"POST: {func(request)}"
     
-    # def __getattribute__(self, item):
-    #     print(item)
-    #     if item == "_Handler__request":
-    #         print('__getattribute__')
+#     # def __getattribute__(self, item):
+#     #     print(item)
+#     #     if item == "_Handler__request":
+#     #         print('__getattribute__')
 
-    #     return object.__getattribute__(self, item)
+#     #     return object.__getattribute__(self, item)
 
-@Handler(methods=('GET', 'POST')) # по умолчанию methods = ('GET',)
-def contact(request):
-    return "Сергей Балакирев"
+# @Handler(methods=('GET', 'POST')) # по умолчанию methods = ('GET',)
+# def contact(request):
+#     return "Сергей Балакирев"
 
-res = contact({})
-print(res) # "POST: Сергей Балакирев"
+# res = contact({})
+# print(res) # "POST: Сергей Балакирев"
 # assert hasattr(Handler, 'get') and hasattr(Handler, 'post'), "класс Handler должен содержать методы get и post"
 
 # @Handler(methods=('GET', 'POST'))
