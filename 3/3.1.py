@@ -81,46 +81,47 @@
 # from typing import Any
 
 
-# class Point:
-#     MAX_COORD = 100
-#     MIN_COORD = 0
+class Point:
+    MAX_COORD = 100
+    MIN_COORD = 0
 
-#     def __init__(self, x, y):
-#         self.x = x
-#         self.y = y
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
 
-#     def set_coord(self, x, y):
-#         if self.MIN_COORD <= x <= self.MAX_COORD:
-#             self.x = x
-#             self.y = y
+    def set_coord(self, x, y):
+        if self.MIN_COORD <= x <= self.MAX_COORD:
+            self.x = x
+            self.y = y
 
-#     def __getattribute__(self, item): # Вызывается при получении свойства класса с именем item
-#         if item == "x":
-#             raise ValueError("access error")
-#         else:
-#             # print("__getattribute__")
-#             return object.__getattribute__(self, item)
+    def __getattribute__(self, item): # Вызывается при получении свойства класса с именем item
+        if item == "x":
+            raise ValueError("access error")
+        else:
+            print("__getattribute__")
+            return object.__getattribute__(self, item)
 
-#     def __setattr__(self, key, value): # Вызывается при изменении свойства key класса
-#         if key == "z":
-#             raise AttributeError("недлопустимое значение")
-#         else:
-#             # print("__setattr__")
-#             object.__setattr__(self, key, value)
-#             # self.__dict__[key] = value
+    # def __setattr__(self, key, value): # Вызывается при изменении свойства key класса
+    #     if key == "z":
+    #         raise AttributeError("недлопустимое значение")
+    #     else:
+    #         # print("__setattr__")
+    #         object.__setattr__(self, key, value)
+    #         # self.__dict__[key] = value
 
-#     def __getattr__(self, item): # Вызывается при получении несуществующего свойства item класса
-#         # print("__getattr__: " + item)
-#         return False
+    # def __getattr__(self, item): # Вызывается при получении несуществующего свойства item класса
+    #     # print("__getattr__: " + item)
+    #     return False
 
-#     def __delattr__(self, item): # Вызывается при удалении свойства item (не выжно существует оно или нет)
-#         print("__delattr__: " + item)
-#         object.__delattr__(self, item)
+    # def __delattr__(self, item): # Вызывается при удалении свойства item (не выжно существует оно или нет)
+    #     print("__delattr__: " + item)
+    #     object.__delattr__(self, item)
 
-# pt1 = Point(1, 2)
-# pt2 = Point(10, 20)
-# # a = pt1.x
-# # pt1.z = 2
+pt1 = Point(1, 2)
+pt2 = Point(10, 20)
+# a = pt1.y
+# print(a)
+# pt1.z = 2
 # print(pt1.yy)
 # del pt1.x
 # print(pt1.__dict__)

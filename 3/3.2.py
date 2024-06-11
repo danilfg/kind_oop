@@ -1,30 +1,79 @@
-# 6
-class HandlerGET:
-    METHOD = "GET"
+# 7
+class Handler:
+    def __init__(self, methods):
+        self.__methods = methods
 
-    def __init__(self, func):
-        self.__fn = func
+    def __call__(self, func):
+        def wrapper(request, *args, **kwargs):
+            if request.setdefault('method', 'GET') and request["method"] in self.__methods:
+                return self.__getattribute__(request['method'].lower())(func, request)
+            return
+        return wrapper
 
-    def __call__(self, request, *args, **kwargs):
-        return self.get(self.__fn, request)
-        
     def get(self, func, request, *args, **kwargs):
-        if request.setdefault('method', 'GET') and self.METHOD in request.values():
-            return f"GET: {func(request)}"
-        return None
+        return f"GET: {func(request)}"
+        
+    def post(self, func, request, *args, **kwargs):
+        return f"POST: {func(request)}"
+    
+    # def __getattribute__(self, item):
+    #     print(item)
+    #     if item == "_Handler__request":
+    #         print('__getattribute__')
 
-@HandlerGET
-def index(request):
-    return "главная страница сайта"
+    #     return object.__getattribute__(self, item)
 
-res = index({"method": "GET"})
-assert res == "GET: главная страница сайта", "декорированная функция вернула неверные данные"
-res = index({"method": "POST"})
-assert res is None, "декорированная функция вернула неверные данные"
-res = index({"method": "POST2"})
-assert res is None, "декорированная функция вернула неверные данные"
-res = index({})
-assert res == "GET: главная страница сайта", "декорированная функция вернула неверные данные"
+@Handler(methods=('GET', 'POST')) # по умолчанию methods = ('GET',)
+def contact(request):
+    return "Сергей Балакирев"
+
+res = contact({})
+print(res) # "POST: Сергей Балакирев"
+# assert hasattr(Handler, 'get') and hasattr(Handler, 'post'), "класс Handler должен содержать методы get и post"
+
+# @Handler(methods=('GET', 'POST'))
+# def contact2(request):
+#     return "контакты"
+
+# assert contact2({"method": "POST"}) == "POST: контакты", "декорированная функция вернула неверные данные"
+# assert contact2({"method": "GET"}) == "GET: контакты", "декорированная функция вернула неверные данные"
+# assert contact2({"method": "DELETE"}) is None, "декорированная функция вернула неверные данные"
+# assert contact2({}) == "GET: контакты", "декорированная функция вернула неверные данные при указании пустого словаря"
+
+# @Handler(methods=('POST'))
+# def index(request):
+#     return "index"
+
+# assert index({"method": "POST"}) == "POST: index", "декорированная функция вернула неверные данные"
+# assert index({"method": "GET"}) is None, "декорированная функция вернула неверные данные"
+# assert index({"method": "DELETE"}) is None, "декорированная функция вернула неверные данные"
+# # 6
+# class HandlerGET:
+#     METHOD = "GET"
+
+#     def __init__(self, func):
+#         self.__fn = func
+
+#     def __call__(self, request, *args, **kwargs):
+#         return self.get(self.__fn, request)
+        
+#     def get(self, func, request, *args, **kwargs):
+#         if request.setdefault('method', 'GET') and self.METHOD in request.values():
+#             return f"GET: {func(request)}"
+#         return None
+
+# @HandlerGET
+# def index(request):
+#     return "главная страница сайта"
+
+# res = index({"method": "GET"})
+# assert res == "GET: главная страница сайта", "декорированная функция вернула неверные данные"
+# res = index({"method": "POST"})
+# assert res is None, "декорированная функция вернула неверные данные"
+# res = index({"method": "POST2"})
+# assert res is None, "декорированная функция вернула неверные данные"
+# res = index({})
+# assert res == "GET: главная страница сайта", "декорированная функция вернула неверные данные"
 
 # @HandlerGET
 # def contact(request):
