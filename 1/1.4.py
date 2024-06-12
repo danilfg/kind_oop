@@ -28,39 +28,39 @@
 # tr.remove('car')
 # print(*tr.translate('go'))
 # 4
-# import sys
-#
-# sys.stdin = open('1.4.py.txt', 'r', encoding='utf-8')
-# # программу не менять, только добавить два метода
-# lst_in = list(map(str.strip, sys.stdin.readlines()))  # считывание списка строк из входного потока
-#
-#
-# class DataBase:
-#     lst_data = []
-#     FIELDS = ('id', 'name', 'old', 'salary')
-#
-#     # здесь добавлять методы
-#     def select(self, a, b):
-#         return self.lst_data[a:b + 1] if b + 1 < len(self.lst_data) else self.lst_data[a:]
-#
-#     def insert(self, data):
-#         self.data = data
-#         for row in data:
-#             self.lst_data.append(
-#                 dict(
-#                     zip(
-#                         self.FIELDS,
-#                         tuple(row.split())
-#                     )
-#                 )
-#             )
-#
-#
-# db = DataBase()
-# db.insert(lst_in)
-# print(db.lst_data)
-# print(db.select(1, 1))
-# print(db.lst_data[1:1])
+import sys
+
+sys.stdin = open('1.4.py.txt', 'r', encoding='utf-8')
+# программу не менять, только добавить два метода
+lst_in = list(map(str.strip, sys.stdin.readlines()))  # считывание списка строк из входного потока
+
+
+class DataBase:
+    lst_data = []
+    FIELDS = ('id', 'name', 'old', 'salary')
+
+    # здесь добавлять методы
+    def select(self, a, b):
+        return self.lst_data[a:b + 1] if b + 1 < len(self.lst_data) else self.lst_data[a:]
+
+    def insert(self, data):
+        self.data = data
+        for row in data:
+            self.lst_data.append(
+                dict(
+                    zip(
+                        self.FIELDS,
+                        tuple(row.split())
+                    )
+                )
+            )
+
+
+db = DataBase()
+db.insert(lst_in)
+print(db.lst_data)
+print(db.select(1, 1))
+print(db.lst_data[1:1])
 # 3
 # import sys
 #
