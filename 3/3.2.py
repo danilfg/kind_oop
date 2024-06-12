@@ -1,19 +1,46 @@
-# 8
-class InputDigits:
-    def __init__(self, func):
-        self.__fn = func
+# # 9
 
-    def __call__(self):
-        res = self.__fn()
-        return list(map(int, res.split()))
+# class InputValues:
+#     def __init__(self, render):
+#         self.__render = render
+
+#     def __call__(self, func):
+#         def wrapper(*args, **kwargs):
+#             items = func().split()
+#             return [self.__render(item) for item in items]
+#         return wrapper
 
 
-@InputDigits
-def input_dg():
-    return input()
+# class RenderDigit:
+#     def __call__(self, item):
+#         if item.isdigit() or (item[1:].isdigit() and item[0] == '-'):
+#             return int(item)
+#         return
+        
 
-t = input_dg()
-print(t)
+# @InputValues(RenderDigit())
+# def input_dg():
+#     return input()
+
+# res = input_dg()
+# print(res)
+
+# # 8
+# class InputDigits:
+#     def __init__(self, func):
+#         self.__fn = func
+
+#     def __call__(self):
+#         res = self.__fn()
+#         return list(map(int, res.split()))
+
+
+# @InputDigits
+# def input_dg():
+#     return input()
+
+# t = input_dg()
+# print(t)
 
 # # 7
 # class Handler:
