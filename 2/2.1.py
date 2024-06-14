@@ -46,67 +46,67 @@
 
 # print(EmailValidator.check_email("sc_lib@list_ru"))  # False)
 # 6
-# class LinkedList:
-#     def __init__(self):
-#         self.tail = None
-#         self.head = None
-#         self.linked_list = []
-#
-#     def add_obj(self, obj):
-#         self.linked_list.append(obj)
-#         self.tail = obj
-#         if len(self.linked_list) == 1:
-#             self.head = obj
-#         else:
-#             self.linked_list[-2].set_next(self.linked_list[-1])
-#             self.linked_list[-1].set_prev(self.linked_list[-2])
-#
-#     def remove_obj(self):
-#         if len(self.linked_list) > 0:
-#             self.linked_list = self.linked_list[:-1]
-#             if len(self.linked_list) > 1:
-#                 self.linked_list[-1].set_next(None)
-#                 self.tail = self.linked_list[-1]
-#
-#     def get_data(self):
-#         return [x.get_data() for x in self.linked_list]
-#
-#
-# class ObjList:
-#     def __init__(self, data):
-#         self.__data = None
-#         self.__prev = None
-#         self.__next = None
-#         self.set_data(data)
-#
-#     def set_next(self, obj):
-#         self.__next = obj
-#
-#     def set_prev(self, obj):
-#         self.__prev = obj
-#
-#     def get_next(self):
-#         return self.__next
-#
-#     def get_prev(self):
-#         return self.__prev
-#
-#     def set_data(self, data):
-#         self.__data = data
-#
-#     def get_data(self):
-#         return self.__data
-#
-#
-# lst = LinkedList()
-# lst.add_obj(ObjList("данные 1"))
-# lst.add_obj(ObjList("данные 2"))
-# lst.add_obj(ObjList("данные 3"))
-# lst.remove_obj()
-# lst.remove_obj()
-# lst.remove_obj()
-# res = lst.get_data()  # ['данные 1', 'данные 2', 'данные 3']
-# print(res)
+class LinkedList:
+    def __init__(self):
+        self.tail = None
+        self.head = None
+        self.linked_list = []
+
+    def add_obj(self, obj):
+        self.linked_list.append(obj)
+        self.tail = obj
+        if len(self.linked_list) == 1:
+            self.head = obj
+        else:
+            self.linked_list[-2].set_next(self.linked_list[-1])
+            self.linked_list[-1].set_prev(self.linked_list[-2])
+
+    def remove_obj(self):
+        if len(self.linked_list) > 0:
+            self.linked_list = self.linked_list[:-1]
+            if len(self.linked_list) > 1:
+                self.linked_list[-1].set_next(None)
+                self.tail = self.linked_list[-1]
+
+    def get_data(self):
+        return [x.get_data() for x in self.linked_list]
+
+
+class ObjList:
+    def __init__(self, data):
+        self.__data = None
+        self.__prev = None
+        self.__next = None
+        self.set_data(data)
+
+    def set_next(self, obj):
+        self.__next = obj
+
+    def set_prev(self, obj):
+        self.__prev = obj
+
+    def get_next(self):
+        return self.__next
+
+    def get_prev(self):
+        return self.__prev
+
+    def set_data(self, data):
+        self.__data = data
+
+    def get_data(self):
+        return self.__data
+
+
+lst = LinkedList()
+lst.add_obj(ObjList("данные 1"))
+lst.add_obj(ObjList("данные 2"))
+lst.add_obj(ObjList("данные 3"))
+lst.remove_obj()
+lst.remove_obj()
+lst.remove_obj()
+res = lst.get_data()  # ['данные 1', 'данные 2', 'данные 3']
+print(res)
 
 # __next - ссылка на следующий объект связного списка (если следующего объекта нет, то __next = None);
 # __prev - ссылка на предыдущий объект связного списка (если предыдущего объекта нет, то __prev = None);

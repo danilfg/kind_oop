@@ -1,22 +1,22 @@
-# 7
-class PhoneNumber:
-    def __init__(self, number, fio):
-        self.number = number
-        self.fio = fio
+# # 7
+# class PhoneNumber:
+#     def __init__(self, number, fio):
+#         self.number = number
+#         self.fio = fio
 
 
-class PhoneBook:
-    def __init__(self):
-        self.phone_list = []
+# class PhoneBook:
+#     def __init__(self):
+#         self.phone_list = []
 
-    def add_phone(self, phone):
-        self.phone_list.append(phone)
+#     def add_phone(self, phone):
+#         self.phone_list.append(phone)
 
-    def remove_phone(self, indx):
-        self.phone_list.pop(indx)
+#     def remove_phone(self, indx):
+#         self.phone_list.pop(indx)
 
-    def get_phone_list(self):
-        return self.phone_list
+#     def get_phone_list(self):
+#         return self.phone_list
 # 6
 # class LineTo:
 #     def __init__(self, x, y):
@@ -332,18 +332,18 @@ class PhoneBook:
 # class Car:
 #     def __init__(self):
 #         self.__model = None
-#
+
 #     @property
 #     def model(self):
 #         return self.__model
-#
+
 #     @model.setter
 #     def model(self, model):
 #         self.__model = model if isinstance(model, str) and 2 <= len(model) <= 100 else self.__model
-#
-#
+
+
 # car = Car()
 # car.model = "Toyota"
 # print(car.model)
-# car.model = "Ta"
+# car.model = "T"
 # print(car.model)
