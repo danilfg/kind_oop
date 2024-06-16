@@ -1,40 +1,145 @@
-# 6
-from math import sqrt
+# # 9
+# class PolyLine:
+#     def __init__(self, *args):
+#         self.__coords = list(args)
 
-
-class RadiusVector:
-    def __init__(self, *args):
-        self.__vector = [0 for _ in range(*args)] if len(args) == 1 else list(args)
-
-    def get_coords(self):
-        return tuple(self.__vector)
+#     def add_coord(self, x, y):
+#         self.__coords.append((x, y))
+        
+#     def remove_coord(self, indx):
+#         self.__coords.pop(indx)
+        
+#     def get_coords(self):
+#         return self.__coords
     
-    def set_coords(self, *args):
-        iter_count = len(args) if len(args) <= len(self.__vector) else len(self.__vector)
-        for i in range(iter_count):
-            self.__vector[i] = args[i]
-
-    def __len__(self):
-        return len(self.__vector)
     
-    def __abs__(self):
-        res = 0
-        for num in self.__vector:
-            res += num * num
-        return sqrt(res)
+# poly = PolyLine((1, 2), (3, 5), (0, 10), (-1, 8))
+# print(poly.get_coords())
+
+# poly.remove_coord(2)
+# print(poly.get_coords())
+# poly.add_coord(0, 10)
+# print(poly.get_coords())
 
 
-vector3D = RadiusVector(3)
-print(vector3D.get_coords())
-vector3D.set_coords(3, -5.6, 8)
+# # 8
+# class Ingredient():
+#     def __init__(self, name, volume, measure):
+#         self.name = name
+#         self.volume = volume
+#         self.measure = measure
+        
+#     def __str__(self):
+#         return f"{self.name}: {self.volume}, {self.measure}"
 
-a, b, c = vector3D.get_coords()
-vector3D.set_coords(3, -5.6, 8, 10, 11) # ошибки быть не должно, последние две координаты игнорируются
-vector3D.set_coords(1, 2) # ошибки быть не должно, меняются только первые две координаты
-res_len = len(vector3D) # res_len = 3
-res_abs = abs(vector3D)
+# class Recipe:
+#     def __init__(self, *args):
+#         self.__ingredients = list(args)
+        
+#     def add_ingredient(self, ingredient):
+#         self.__ingredients += [ingredient]
+        
+#     def remove_ingredient(self, ingredient):
+#         self.__ingredients.remove(ingredient)
+        
+#     def get_ingredients(self):
+#         return tuple(self.__ingredients)
+    
+#     def __len__(self):
+#         return len(self.__ingredients)
+    
+    
+# recipe = Recipe()
+# recipe.add_ingredient(Ingredient("Соль", 1, "столовая ложка"))
+# recipe.add_ingredient(Ingredient("Мука", 1, "кг"))
+# recipe.add_ingredient(Ingredient("Мясо баранины", 10, "кг"))
+# ings = recipe.get_ingredients()
+# n = len(recipe) # n = 3
+# x = Ingredient("Соль", 1, "столовая ложка")
+# assert hasattr(x, 'name') and hasattr(x, 'volume') and hasattr(x, 'measure'), "объект класса Ingredient должен иметь атрибуты: name, volume, measure"
+# 7
 
-print(res_len, res_abs, sep='\n')
+# class DeltaClock:
+#     def __init__(self, clock1, clock2):
+#         self.__clock1 = clock1
+#         self.__clock2 = clock2
+        
+#     def __str__(self):
+#         res = self.__clock1.get_time() - self.__clock2.get_time()
+#         if res <= 0:
+#             return '00: 00: 00'
+#         hours = res // 3600
+#         minutes = (res - hours * 3600) // 60
+#         seconds = res - hours * 3600 - minutes * 60
+#         return f'{hours:02}: {minutes:02}: {seconds:02}'
+
+#     def __len__(self):
+#         res = self.__clock1.get_time() - self.__clock2.get_time()
+#         return 0 if res <= 0 else res
+
+# class Clock:
+#     def __init__(self, hours, minutes, seconds):
+#         self.__hours = hours
+#         self.__minutes = minutes
+#         self.__seconds = seconds
+        
+#     def get_time(self):
+#         return self.__hours * 3600 + self.__minutes * 60 + self.__seconds
+
+#     @property
+#     def hours(self):
+#         return self.__hours
+
+#     @property
+#     def minutes(self):
+#         return self.__minutes
+
+#     @property
+#     def seconds(self):
+#         return self.__seconds
+
+
+# dt = DeltaClock(Clock(2, 45, 0), Clock(1, 15, 0))
+# print(dt) # 01: 30: 00
+# len_dt = len(dt) # 5400
+# print(len_dt)
+# # 6
+# from math import sqrt
+
+
+# class RadiusVector:
+#     def __init__(self, *args):
+#         self.__vector = [0 for _ in range(*args)] if len(args) == 1 else list(args)
+
+#     def get_coords(self):
+#         return tuple(self.__vector)
+    
+#     def set_coords(self, *args):
+#         iter_count = len(args) if len(args) <= len(self.__vector) else len(self.__vector)
+#         for i in range(iter_count):
+#             self.__vector[i] = args[i]
+
+#     def __len__(self):
+#         return len(self.__vector)
+    
+#     def __abs__(self):
+#         res = 0
+#         for num in self.__vector:
+#             res += num * num
+#         return sqrt(res)
+
+
+# vector3D = RadiusVector(3)
+# print(vector3D.get_coords())
+# vector3D.set_coords(3, -5.6, 8)
+
+# a, b, c = vector3D.get_coords()
+# vector3D.set_coords(3, -5.6, 8, 10, 11) # ошибки быть не должно, последние две координаты игнорируются
+# vector3D.set_coords(1, 2) # ошибки быть не должно, меняются только первые две координаты
+# res_len = len(vector3D) # res_len = 3
+# res_abs = abs(vector3D)
+
+# print(res_len, res_abs, sep='\n')
 
 # # 5
 # from math import sqrt
