@@ -1,71 +1,171 @@
-# 2
-class ListMath:
-    def __init__(self, lst: list = None):
-        self.lst_math = self.check_list(lst if lst and type(lst) == list else [])
-    
-    @staticmethod
-    def check_list(items):
-        return [x for x in items if isinstance(x, (int, float)) and not isinstance(x, bool)]
-    
-    def __add__(self, other): #  Class + other
-        return ListMath([x + other for x in self.lst_math])
-    
-    def __radd__(self, other): # other + Class
-        return self + other
-    
-    def __iadd__(self, other): # Class += other
-        self.lst_math = [x + other for x in self.lst_math]
+# 3
+class Stack:
+    def __init__(self):
+        self.__stack_objs = []
+        self.top = None
+        
+    def push_back(self, obj):
+        if not self.top:
+            self.top = obj
+        else:
+            self.__stack_objs[-1].next = obj
+        self.__stack_objs.append(obj)
+            
+    def pop_back(self):
+        if self.__stack_objs:
+            self.__stack_objs = self.__stack_objs[:-1]
+        if not self.__stack_objs:
+            self.top = None
+        self.__stack_objs[-1].next = None
+        
+    def __add__(self, other):
+        self.__stack_objs.append(other)
         return self
     
-    def __sub__(self, other): #  Class + other
-        return ListMath([x - other for x in self.lst_math])
-    
-    def __rsub__(self, other): # other + Class
-        return ListMath([other - x for x in self.lst_math])
-    
-    def __isub__(self, other): # Class += other
-        self.lst_math = [x - other for x in self.lst_math]
-        return self
-    
-    def __mul__(self, other): #  Class + other
-        return ListMath([x * other for x in self.lst_math])
-    
-    def __rmul__(self, other): # other + Class
-        return self * other
-    
-    def __imul__(self, other): # Class += other
-        self.lst_math = [x * other for x in self.lst_math]
+    def __mul__(self, others):
+        for other in others:
+            self.__stack_objs.append(StackObj(other))
         return self
 
-    def __truediv__(self, other): #  Class + other
-        return ListMath([x / other for x in self.lst_math])
-    
-    def __rtruediv__(self, other): # other + Class
-        if 0 in self.lst_math:
-            raise ZeroDivisionError()
-        return ListMath([other / x for x in self.lst_math])
-    
-    def __itruediv__(self, other): # Class += other
-        self.lst_math = [x / other for x in self.lst_math]
-        return self
+    def __len__(self):
+        return len(self.__stack_objs)
 
-lst = ListMath([1, "abc", -5, 7.68, True]) # ListMath: [1, -5, 7.68]
+class StackObj:
+    def __init__(self, data):
+        self.__data = data
+        self.__next = None
+        
+    @property
+    def next(self):
+        return self.__next
+    
+    @next.setter
+    def next(self, value):
+        self.__data = value
 
-lst = lst + 76 # сложение каждого числа списка с определенным числом
-print(lst.__dict__)
-lst = 6.5 + lst # сложение каждого числа списка с определенным числом
-print(lst.__dict__)
-lst += 76.7  # сложение каждого числа списка с определенным числом
-print(lst.__dict__)
-lst = lst - 76 # вычитание из каждого числа списка определенного числа
-lst = 7.0 - lst # вычитание из числа каждого числа списка
-lst -= 76.3
-lst = lst * 5 # умножение каждого числа списка на указанное число (в данном случае на 5)
-lst = 5 * lst # умножение каждого числа списка на указанное число (в данном случае на 5)
-lst *= 5.54
-lst = lst / 13 # деление каждого числа списка на указанное число (в данном случае на 13)
-lst = 3 / lst # деление числа на каждый элемент списка
-lst /= 13.0
+
+assert hasattr(Stack, 'pop_back'), "класс Stack должен иметь метод pop_back"
+
+st = Stack()
+top = StackObj("1")
+st.push_back(top)
+assert st.top == top, "неверное значение атрибута top"
+
+st = st + StackObj("2")
+st = st + StackObj("3")
+obj = StackObj("4")
+st += obj
+
+st = st * ['data_1', 'data_2']
+st *= ['data_3', 'data_4']
+st += StackObj("225")
+st.pop_back()
+
+d = ["1", "2", "3", "4", 'data_1', 'data_2', 'data_3', 'data_4']
+h = top
+i = 0
+print(len(st))
+print(len(d))
+while h:
+    assert h._StackObj__data == d[i], "неверное значение атрибута __data, возможно, некорректно работают операторы + и *"
+    h = h._StackObj__next
+    i += 1
+    
+print(i)
+
+    
+assert i == len(d), "неверное число объектов в стеке"
+
+# obj = StackObj('data')
+# # добавление нового объекта класса StackObj в конец односвязного списка st
+# st = Stack()
+# print(1, len(st))
+# st.push_back(StackObj('123'))
+# print(2, len(st))
+# st = st + obj
+# print(3, len(st))
+# st.pop_back()
+# print(4, st.__dict__)
+# print(4, len(st))
+# st += obj
+# print(5, len(st))
+
+# # добавление нескольких объектов в конец односвязного списка
+# st = st * ['data_1', 'data_2', 'data_N']
+# print(6, len(st))
+
+# st *= ['data_1', 'data_2', 'data_N']
+# print(7, len(st))
+
+
+# # 2
+# class ListMath:
+#     def __init__(self, lst: list = None):
+#         self.lst_math = self.check_list(lst if lst and type(lst) == list else [])
+    
+#     @staticmethod
+#     def check_list(items):
+#         return [x for x in items if isinstance(x, (int, float)) and not isinstance(x, bool)]
+    
+#     def __add__(self, other): #  Class + other
+#         return ListMath([x + other for x in self.lst_math])
+    
+#     def __radd__(self, other): # other + Class
+#         return self + other
+    
+#     def __iadd__(self, other): # Class += other
+#         self.lst_math = [x + other for x in self.lst_math]
+#         return self
+    
+#     def __sub__(self, other): #  Class + other
+#         return ListMath([x - other for x in self.lst_math])
+    
+#     def __rsub__(self, other): # other + Class
+#         return ListMath([other - x for x in self.lst_math])
+    
+#     def __isub__(self, other): # Class += other
+#         self.lst_math = [x - other for x in self.lst_math]
+#         return self
+    
+#     def __mul__(self, other): #  Class + other
+#         return ListMath([x * other for x in self.lst_math])
+    
+#     def __rmul__(self, other): # other + Class
+#         return self * other
+    
+#     def __imul__(self, other): # Class += other
+#         self.lst_math = [x * other for x in self.lst_math]
+#         return self
+
+#     def __truediv__(self, other): #  Class + other
+#         return ListMath([x / other for x in self.lst_math])
+    
+#     def __rtruediv__(self, other): # other + Class
+#         if 0 in self.lst_math:
+#             raise ZeroDivisionError()
+#         return ListMath([other / x for x in self.lst_math])
+    
+#     def __itruediv__(self, other): # Class += other
+#         self.lst_math = [x / other for x in self.lst_math]
+#         return self
+
+# lst = ListMath([1, "abc", -5, 7.68, True]) # ListMath: [1, -5, 7.68]
+
+# lst = lst + 76 # сложение каждого числа списка с определенным числом
+# print(lst.__dict__)
+# lst = 6.5 + lst # сложение каждого числа списка с определенным числом
+# print(lst.__dict__)
+# lst += 76.7  # сложение каждого числа списка с определенным числом
+# print(lst.__dict__)
+# lst = lst - 76 # вычитание из каждого числа списка определенного числа
+# lst = 7.0 - lst # вычитание из числа каждого числа списка
+# lst -= 76.3
+# lst = lst * 5 # умножение каждого числа списка на указанное число (в данном случае на 5)
+# lst = 5 * lst # умножение каждого числа списка на указанное число (в данном случае на 5)
+# lst *= 5.54
+# lst = lst / 13 # деление каждого числа списка на указанное число (в данном случае на 13)
+# lst = 3 / lst # деление числа на каждый элемент списка
+# lst /= 13.0
 # # 1
 # class NewList:
 #     def __init__(self, items: list = []):
