@@ -19,12 +19,12 @@ class Stack:
         self.__stack_objs[-1].next = None
         
     def __add__(self, other):
-        self.__stack_objs.append(other)
+        self.push_back(other)
         return self
     
     def __mul__(self, others):
         for other in others:
-            self.__stack_objs.append(StackObj(other))
+            self.push_back(StackObj(other))
         return self
 
     def __len__(self):
@@ -41,7 +41,7 @@ class StackObj:
     
     @next.setter
     def next(self, value):
-        self.__data = value
+        self.__next = value
 
 
 assert hasattr(Stack, 'pop_back'), "класс Stack должен иметь метод pop_back"
@@ -50,28 +50,34 @@ st = Stack()
 top = StackObj("1")
 st.push_back(top)
 assert st.top == top, "неверное значение атрибута top"
-
+print('GAVNO', st._Stack__stack_objs[0]._StackObj__data)
 st = st + StackObj("2")
+print('GAVNO', st._Stack__stack_objs[0]._StackObj__data)
 st = st + StackObj("3")
 obj = StackObj("4")
 st += obj
-
 st = st * ['data_1', 'data_2']
 st *= ['data_3', 'data_4']
 st += StackObj("225")
 st.pop_back()
-
+print(st.__dict__)
 d = ["1", "2", "3", "4", 'data_1', 'data_2', 'data_3', 'data_4']
+
 h = top
+print(h.__dict__)
 i = 0
 print(len(st))
 print(len(d))
+print(st._Stack__stack_objs[0]._StackObj__data)
+# print(h.__dict__)
 while h:
+    print(h.__dict__)
+    
     assert h._StackObj__data == d[i], "неверное значение атрибута __data, возможно, некорректно работают операторы + и *"
     h = h._StackObj__next
     i += 1
     
-print(i)
+# print(i)
 
     
 assert i == len(d), "неверное число объектов в стеке"
