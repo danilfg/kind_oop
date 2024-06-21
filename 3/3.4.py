@@ -1,86 +1,188 @@
-# 3
-class Stack:
-    def __init__(self):
-        self.__stack_objs = []
-        self.top = None
-        
-    def push_back(self, obj):
-        if not self.top:
-            self.top = obj
-        else:
-            self.__stack_objs[-1].next = obj
-        self.__stack_objs.append(obj)
-            
-    def pop_back(self):
-        if self.__stack_objs:
-            self.__stack_objs = self.__stack_objs[:-1]
-        if not self.__stack_objs:
-            self.top = None
-        self.__stack_objs[-1].next = None
+# 6
+class Box3D:
+    def __init__(self, width, height, depth):
+        self.width = width
+        self.height = height
+        self.depth = depth
         
     def __add__(self, other):
-        self.push_back(other)
-        return self
+        return Box3D(self.width + other.width, self.height + other.height, self.depth + other.depth)
+
+    def __mul__(self, other):
+        return Box3D(self.width * other, self.height * other, self.depth * other)
     
-    def __mul__(self, others):
-        for other in others:
-            self.push_back(StackObj(other))
-        return self
-
-    def __len__(self):
-        return len(self.__stack_objs)
-
-class StackObj:
-    def __init__(self, data):
-        self.__data = data
-        self.__next = None
+    def __rmul__(self, other):
+        return self * other
+    
+    def __sub__(self, other):
+        return Box3D(self.width - other.width, self.height - other.height, self.depth - other.depth)
+    
+    def __floordiv__(self, other):
+        return Box3D(self.width // other, self.height // other, self.depth // other)
+    
+    def __mod__(self, other):
+        return Box3D(self.width % other, self.height % other, self.depth % other)
         
-    @property
-    def next(self):
-        return self.__next
+# # 5
+# class Budget:
+#     def __init__(self):
+#         self.__items = []
+        
+#     def add_item(self, it):
+#         self.__items.append(it)
+        
+#     def remove_item(self, indx):
+#         self.__items.pop(indx)
+        
+#     def get_items(self):
+#         return self.__items
     
-    @next.setter
-    def next(self, value):
-        self.__next = value
+
+    
+    
+# class Item:
+#     def __init__(self, name, money):
+#         self.name = name
+#         self.money = money
+        
+#     def __add__(self, other):
+#         s = self.money + other.money
+#         return s
+    
+#     def __radd__(self, other):
+#         return other + self.money
+
+# my_budget = Budget()
+# my_budget.add_item(Item("Курс по Python ООП", 2000))
+# my_budget.add_item(Item("Курс по Django", 5000.01))
+# my_budget.add_item(Item("Курс по NumPy", 0))
+# my_budget.add_item(Item("Курс по C++", 1500.10))
+
+# # вычисление общих расходов
+# s = 0
+# for x in my_budget.get_items():
+#     s = s + x
+# # 4
+# class Lib:
+#     def __init__(self):
+#         self.book_list = []
+    
+#     def __add__(self, other):
+#         self.book_list.append(other)
+#         return self
+    
+#     def __sub__(self, other):
+#         if isinstance(other, int):
+#             self.book_list.pop(other)
+#         else:
+#             self.book_list.remove(other)
+#         return self
+    
+#     def __len__(self):
+#         return len(self.book_list)
+    
+    
+# class Book:
+#     def __init__(self, title, author, year):
+#         self.title = title
+#         self.author = author
+#         self.year = year
+        
 
 
-assert hasattr(Stack, 'pop_back'), "класс Stack должен иметь метод pop_back"
+# lib = Lib()
 
-st = Stack()
-top = StackObj("1")
-st.push_back(top)
-assert st.top == top, "неверное значение атрибута top"
-print('GAVNO', st._Stack__stack_objs[0]._StackObj__data)
-st = st + StackObj("2")
-print('GAVNO', st._Stack__stack_objs[0]._StackObj__data)
-st = st + StackObj("3")
-obj = StackObj("4")
-st += obj
-st = st * ['data_1', 'data_2']
-st *= ['data_3', 'data_4']
-st += StackObj("225")
-st.pop_back()
-print(st.__dict__)
-d = ["1", "2", "3", "4", 'data_1', 'data_2', 'data_3', 'data_4']
+# lib = lib + book # добавление новой книги в библиотеку
+# lib += book
+# lib = lib - book # удаление книги book из библиотеки (удаление происходит по ранее созданному объекту book класса Book)
+# lib -= book
 
-h = top
-print(h.__dict__)
-i = 0
-print(len(st))
-print(len(d))
-print(st._Stack__stack_objs[0]._StackObj__data)
+# lib = lib - indx # удаление книги по ее порядковому номеру (индексу: отсчет начинается с нуля)
+# lib -= indx
+
+# # 3
+# class Stack:
+#     def __init__(self):
+#         self.__stack_objs = []
+#         self.top = None
+        
+#     def push_back(self, obj):
+#         if not self.top:
+#             self.top = obj
+#         else:
+#             self.__stack_objs[-1].next = obj
+#         self.__stack_objs.append(obj)
+            
+#     def pop_back(self):
+#         if self.__stack_objs:
+#             self.__stack_objs = self.__stack_objs[:-1]
+#         if not self.__stack_objs:
+#             self.top = None
+#         self.__stack_objs[-1].next = None
+        
+#     def __add__(self, other):
+#         self.push_back(other)
+#         return self
+    
+#     def __mul__(self, others):
+#         for other in others:
+#             self.push_back(StackObj(other))
+#         return self
+
+#     def __len__(self):
+#         return len(self.__stack_objs)
+
+# class StackObj:
+#     def __init__(self, data):
+#         self.__data = data
+#         self.__next = None
+        
+#     @property
+#     def next(self):
+#         return self.__next
+    
+#     @next.setter
+#     def next(self, value):
+#         self.__next = value
+
+
+# assert hasattr(Stack, 'pop_back'), "класс Stack должен иметь метод pop_back"
+
+# st = Stack()
+# top = StackObj("1")
+# st.push_back(top)
+# assert st.top == top, "неверное значение атрибута top"
+# print('GAVNO', st._Stack__stack_objs[0]._StackObj__data)
+# st = st + StackObj("2")
+# print('GAVNO', st._Stack__stack_objs[0]._StackObj__data)
+# st = st + StackObj("3")
+# obj = StackObj("4")
+# st += obj
+# st = st * ['data_1', 'data_2']
+# st *= ['data_3', 'data_4']
+# st += StackObj("225")
+# st.pop_back()
+# print(st.__dict__)
+# d = ["1", "2", "3", "4", 'data_1', 'data_2', 'data_3', 'data_4']
+
+# h = top
 # print(h.__dict__)
-while h:
-    print(h.__dict__)
+# i = 0
+# print(len(st))
+# print(len(d))
+# print(st._Stack__stack_objs[0]._StackObj__data)
+# # print(h.__dict__)
+# while h:
+#     print(h.__dict__)
     
-    assert h._StackObj__data == d[i], "неверное значение атрибута __data, возможно, некорректно работают операторы + и *"
-    h = h._StackObj__next
-    i += 1
+#     assert h._StackObj__data == d[i], "неверное значение атрибута __data, возможно, некорректно работают операторы + и *"
+#     h = h._StackObj__next
+#     i += 1
     
-# print(i)
+# # print(i)
 
     
-assert i == len(d), "неверное число объектов в стеке"
+# assert i == len(d), "неверное число объектов в стеке"
 
 # obj = StackObj('data')
 # # добавление нового объекта класса StackObj в конец односвязного списка st
