@@ -1,27 +1,67 @@
-# 6
-class Box3D:
-    def __init__(self, width, height, depth):
-        self.width = width
-        self.height = height
-        self.depth = depth
+# # 7
+# class MaxPooling:
+#     def __init__(self, step=(2, 2), size=(2, 2)):
+#         self.step = step
+#         self.size = size
+#         self.res = []
         
-    def __add__(self, other):
-        return Box3D(self.width + other.width, self.height + other.height, self.depth + other.depth)
+#     def __call__(self, matrix):
+#         cols = len(matrix[0])
+#         rows = len(matrix)
+        
+#         if rows == 0:
+#             return [[]]
+        
+#         if not all(map(lambda x: len(x) == cols, matrix)) or \
+#             not all(map(lambda row: all(map(lambda x: type(x) in (int, float), row)), matrix)):
+            
+#             raise ValueError("Неверный формат для первого параметра matrix.")
 
-    def __mul__(self, other):
-        return Box3D(self.width * other, self.height * other, self.depth * other)
+        
+#         h, w = self.size[0], self.size[1]
+#         sh, sw = self.step[0], self.step[1]
+        
+#         rows_range = (rows - h) // sh + 1
+#         cols_range = (cols - w) // sw + 1
+        
+#         res = [[0] * cols_range for _ in range(rows_range)]
+        
+#         for i in range(rows_range):
+#             for j in range(cols_range):
+#                 s = (x for r in matrix[i * sh: i * sh + h] for x in r[j *sw: j * sw + w])
+#                 res[i][j] = max(s)
+                
+#         return res
+            
+            
+# mp = MaxPooling(step=(2, 2), size=(2,2))
+# res = mp([[1, 2, 3, 4], [5, 6, 7, 8], [9, 8, 7, 6], [5, 4, 3, 2]])    # [[6, 8], [9, 7]]
+# print(res)
+
+# # 6
+# class Box3D:
+#     def __init__(self, width, height, depth):
+#         self.width = width
+#         self.height = height
+#         self.depth = depth
+        
+#     def __add__(self, other):
+#         return Box3D(self.width + other.width, self.height + other.height, self.depth + other.depth)
+
+#     def __mul__(self, other):
+#         return Box3D(self.width * other, self.height * other, self.depth * other)
     
-    def __rmul__(self, other):
-        return self * other
+#     def __rmul__(self, other):
+#         return self * other
     
-    def __sub__(self, other):
-        return Box3D(self.width - other.width, self.height - other.height, self.depth - other.depth)
+#     def __sub__(self, other):
+#         return Box3D(self.width - other.width, self.height - other.height, self.depth - other.depth)
     
-    def __floordiv__(self, other):
-        return Box3D(self.width // other, self.height // other, self.depth // other)
+#     def __floordiv__(self, other):
+#         return Box3D(self.width // other, self.height // other, self.depth // other)
     
-    def __mod__(self, other):
-        return Box3D(self.width % other, self.height % other, self.depth % other)
+#     def __mod__(self, other):
+#         return Box3D(self.width % other, self.height % other, self.depth % other)
         
 # # 5
 # class Budget:
