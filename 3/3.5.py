@@ -1,6 +1,47 @@
 # 3
+class StringText:
+    def __init__(self, lst_words):
+        self.__lst_words = lst_words
+    
+    @property
+    def lst_words(self):
+        return self.__lst_words
+    
+    def __str__(self):
+        return self.lst_words
+    
+    def __le__(self, other):
+        return len(self.lst_words) <= len(other.lst_words)
+    
+    def __lt__(self, other):
+        return len(self.lst_words) < len(other.lst_words)
+    
+    def __len__(self):
+        return len(self.__lst_words)
+    
+stich = ["Я к вам пишу – чего же боле?",
+        "Что я могу еще сказать?",
+        "Теперь, я знаю, в вашей воле",
+        "Меня презреньем наказать.",
+        "Но вы, к моей несчастной доле",
+        "Хоть каплю жалости храня,",
+        "Вы не оставите меня."]
 
+symb = "–?!,.;"
 
+stich_temp = stich
+
+for y in list(symb):
+    stich_temp = list(map(lambda x: x.replace(y, ""), stich_temp))
+stich_temp = [x.split() for x in stich_temp]
+lst_text = []
+for lst_words in stich_temp:
+    lst_text.append(StringText(lst_words))
+    
+lst_text_sorted = sorted(lst_text, key=lambda x: len(x), reverse=True)
+lst_text_sorted = list(' '.join(x.lst_words) for x in lst_text_sorted)
+# lst_text_sorted.reverse()
+print(lst_text_sorted)
 # # 2
 # class Dimensions:
 #     MIN_DIMENSION = 10
