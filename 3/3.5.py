@@ -1,47 +1,113 @@
-# 3
-class StringText:
-    def __init__(self, lst_words):
-        self.__lst_words = lst_words
-    
-    @property
-    def lst_words(self):
-        return self.__lst_words
-    
-    def __str__(self):
-        return self.lst_words
-    
-    def __le__(self, other):
-        return len(self.lst_words) <= len(other.lst_words)
-    
-    def __lt__(self, other):
-        return len(self.lst_words) < len(other.lst_words)
-    
-    def __len__(self):
-        return len(self.__lst_words)
-    
-stich = ["Я к вам пишу – чего же боле?",
-        "Что я могу еще сказать?",
-        "Теперь, я знаю, в вашей воле",
-        "Меня презреньем наказать.",
-        "Но вы, к моей несчастной доле",
-        "Хоть каплю жалости храня,",
-        "Вы не оставите меня."]
+# 4
+import re
 
-symb = "–?!,.;"
-
-stich_temp = stich
-
-for y in list(symb):
-    stich_temp = list(map(lambda x: x.replace(y, ""), stich_temp))
-stich_temp = [x.split() for x in stich_temp]
-lst_text = []
-for lst_words in stich_temp:
-    lst_text.append(StringText(lst_words))
+class Morph:
+    def __init__(self, *argv):
+        self.words = argv
+        
+    def add_word(self, word):
+        if word not in self.words:
+            self.words += (word,)
     
-lst_text_sorted = sorted(lst_text, key=lambda x: len(x), reverse=True)
-lst_text_sorted = list(' '.join(x.lst_words) for x in lst_text_sorted)
-# lst_text_sorted.reverse()
-print(lst_text_sorted)
+    def get_words(self):
+        return self.words
+        
+    def __eq__(self, other):
+        other = other.lower()
+        return True if other in self.words else False
+
+# --------------------------------------------------------------------
+# s = """- связь, связи, связью, связи, связей, связям, связями, связях
+# - формула, формулы, формуле, формулу, формулой, формул, формулам, формулами, формулах
+# - вектор, вектора, вектору, вектором, векторе, векторы, векторов, векторам, векторами, векторах
+# - эффект, эффекта, эффекту, эффектом, эффекте, эффекты, эффектов, эффектам, эффектами, эффектах
+# - день, дня, дню, днем, дне, дни, дням, днями, днях
+# """
+
+# dict_words = [Morph(*line.lstrip('- ').split(', ')) for line in s.splitlines()]
+# --------------------------------------------------------------------
+
+dict_words = []
+a = ['связь', 'связи', 'связью', 'связей', 'связям', 'связями', 'связях']
+b = ['формула', 'формулы', 'формуле', 'формулу', 'формулой', 'формул', 'формулам', 'формулами', 'формулах']
+c = ['вектор', 'вектора', 'вектору', 'вектором', 'векторе', 'векторы', 'векторов', 'векторам', 'векторами', 'векторах']
+d = ['эффект', 'эффекта', 'эффекту', 'эффектом', 'эффекте', 'эффекты', 'эффектов', 'эффектам', 'эффектами', 'эффектах']
+e = ['день', 'дня', 'дню', 'днем', 'дне', 'дни', 'дням', 'днями', 'днях']
+dict_words.append(Morph('связь', 'связи', 'связью', 'связей', 'связям', 'связями', 'связях'))
+dict_words.append(Morph('формула', 'формулы', 'формуле', 'формулу', 'формулой', 'формул', 'формулам', 'формулами', 'формулах'))
+dict_words.append(Morph('вектор', 'вектора', 'вектору', 'вектором', 'векторе', 'векторы', 'векторов', 'векторам', 'векторами', 'векторах'))
+dict_words.append(Morph('эффект', 'эффекта', 'эффекту', 'эффектом', 'эффекте', 'эффекты', 'эффектов', 'эффектам', 'эффектами', 'эффектах'))
+dict_words.append(Morph('день', 'дня', 'дню', 'днем', 'дне', 'дни', 'дням', 'днями', 'днях'))
+
+
+
+# text = input()
+text = 'Мы будем устанавливать связь завтра днем.'
+
+text = re.sub("[^A-Za-zА-Яа-я ]", "", text.lower())
+text = text.split()
+
+res = 0
+for morph in dict_words:
+    for word in morph.get_words():
+        if word in text:
+            res += 1
+print(res)
+
+# qw = Morph('связи', 'связью', 'связей', 'связям', 'связями', 'связях')
+# print(qw.get_words())
+
+# print(qw == 'связь')
+# print('связь' == qw)
+
+# qw.add_word('связь')
+# print(qw.get_words())
+# print(qw != 'связь')
+# print('связь' == qw)
+# # 3
+# class StringText:
+#     def __init__(self, lst_words):
+#         self.__lst_words = lst_words
+    
+#     @property
+#     def lst_words(self):
+#         return self.__lst_words
+    
+#     def __str__(self):
+#         return self.lst_words
+    
+#     def __le__(self, other):
+#         return len(self.lst_words) <= len(other.lst_words)
+    
+#     def __lt__(self, other):
+#         return len(self.lst_words) < len(other.lst_words)
+    
+#     def __len__(self):
+#         return len(self.__lst_words)
+    
+# stich = ["Я к вам пишу – чего же боле?",
+#         "Что я могу еще сказать?",
+#         "Теперь, я знаю, в вашей воле",
+#         "Меня презреньем наказать.",
+#         "Но вы, к моей несчастной доле",
+#         "Хоть каплю жалости храня,",
+#         "Вы не оставите меня."]
+
+# symb = "–?!,.;"
+
+# stich_temp = stich
+
+# for y in list(symb):
+#     stich_temp = list(map(lambda x: x.replace(y, ""), stich_temp))
+# stich_temp = [x.split() for x in stich_temp]
+# lst_text = []
+# for lst_words in stich_temp:
+#     lst_text.append(StringText(lst_words))
+    
+# lst_text_sorted = sorted(lst_text, key=lambda x: len(x), reverse=True)
+# lst_text_sorted = list(' '.join(x.lst_words) for x in lst_text_sorted)
+# # lst_text_sorted.reverse()
+# print(lst_text_sorted)
 # # 2
 # class Dimensions:
 #     MIN_DIMENSION = 10
