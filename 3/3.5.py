@@ -1,58 +1,121 @@
-# 4
-import re
-
-class Morph:
-    def __init__(self, *argv):
-        self.words = argv
+# 6
+class MoneyR:
+    def __init__(self, cb, volume = 0):
+        self.__cb = cb
+        self.__volume = volume
         
-    def add_word(self, word):
-        if word not in self.words:
-            self.words += (word,)
+    @property
+    def cb(self):
+        return self.__cb
     
-    def get_words(self):
-        return self.words
+    @cb.setter
+    def cb(self, value):
+        self.__cb = value
         
+    @property
+    def volume(self):
+        return self.__volume
+    
+    @cb.setter
+    def volume(self, value):
+        self.__volume = value
+
     def __eq__(self, other):
-        other = other.lower()
-        return True if other in self.words else False
+        return self.__volume
 
-# --------------------------------------------------------------------
-# s = """- связь, связи, связью, связи, связей, связям, связями, связях
-# - формула, формулы, формуле, формулу, формулой, формул, формулам, формулами, формулах
-# - вектор, вектора, вектору, вектором, векторе, векторы, векторов, векторам, векторами, векторах
-# - эффект, эффекта, эффекту, эффектом, эффекте, эффекты, эффектов, эффектам, эффектами, эффектах
-# - день, дня, дню, днем, дне, дни, дням, днями, днях
-# """
+# # 5
+# class FileAcceptor:
+#     def __init__(self, *argv):
+#         self.exts = argv 
 
-# dict_words = [Morph(*line.lstrip('- ').split(', ')) for line in s.splitlines()]
-# --------------------------------------------------------------------
-
-dict_words = []
-a = ['связь', 'связи', 'связью', 'связей', 'связям', 'связями', 'связях']
-b = ['формула', 'формулы', 'формуле', 'формулу', 'формулой', 'формул', 'формулам', 'формулами', 'формулах']
-c = ['вектор', 'вектора', 'вектору', 'вектором', 'векторе', 'векторы', 'векторов', 'векторам', 'векторами', 'векторах']
-d = ['эффект', 'эффекта', 'эффекту', 'эффектом', 'эффекте', 'эффекты', 'эффектов', 'эффектам', 'эффектами', 'эффектах']
-e = ['день', 'дня', 'дню', 'днем', 'дне', 'дни', 'дням', 'днями', 'днях']
-dict_words.append(Morph('связь', 'связи', 'связью', 'связей', 'связям', 'связями', 'связях'))
-dict_words.append(Morph('формула', 'формулы', 'формуле', 'формулу', 'формулой', 'формул', 'формулам', 'формулами', 'формулах'))
-dict_words.append(Morph('вектор', 'вектора', 'вектору', 'вектором', 'векторе', 'векторы', 'векторов', 'векторам', 'векторами', 'векторах'))
-dict_words.append(Morph('эффект', 'эффекта', 'эффекту', 'эффектом', 'эффекте', 'эффекты', 'эффектов', 'эффектам', 'эффектами', 'эффектах'))
-dict_words.append(Morph('день', 'дня', 'дню', 'днем', 'дне', 'дни', 'дням', 'днями', 'днях'))
+#     def __call__(self, ext):
+#         return True if ext.split('.')[-1] in self.exts else False
+    
+#     def __add__(self, other):
+#         return FileAcceptor(*(self.exts + other.exts))
 
 
+# filenames = ["boat.jpg", "ans.web.png", "text.txt", "www.python.doc", "my.ava.jpg", "forest.jpeg", "eq_1.png", "eq_2.xls"]
 
-# text = input()
-text = 'Мы будем устанавливать связь завтра днем.'
+# # acceptor1 = FileAcceptor("jpg", "jpeg", "png")
+# # print(acceptor1('jpg'))
+# # print('acceptor1', acceptor1.exts)
 
-text = re.sub("[^A-Za-zА-Яа-я ]", "", text.lower())
-text = text.split()
 
-res = 0
-for morph in dict_words:
-    for word in morph.get_words():
-        if word in text:
-            res += 1
-print(res)
+# # acceptor2 = FileAcceptor("png", "bmp")
+# # print('acceptor2', acceptor2.exts)
+
+# # acceptor12 = acceptor1 + acceptor2    # ("jpg", "jpeg", "png", "bmp")
+# # print('acceptor12', acceptor12.exts)
+# acceptor_images = FileAcceptor("jpg", "jpeg", "png")
+# # print('acceptor_images', acceptor_images.exts)
+
+# acceptor_docs = FileAcceptor("txt", "doc", "xls")
+# # print('acceptor_docs', acceptor_docs.exts)
+
+# # filenames = list(filter(acceptor_images + acceptor_docs, filenames))
+# # filenames1 = list(filter(acceptor_images, filenames))
+# filenames1 = []
+# for filename in filenames:
+#     filenames1.append(acceptor_images(filename))
+
+# print(filenames1)
+
+# # 4
+# import re
+
+# class Morph:
+#     def __init__(self, *argv):
+#         self.words = argv
+        
+#     def add_word(self, word):
+#         if word not in self.words:
+#             self.words += (word,)
+    
+#     def get_words(self):
+#         return self.words
+        
+#     def __eq__(self, other):
+#         other = other.lower()
+#         return True if other in self.words else False
+
+# # --------------------------------------------------------------------
+# # s = """- связь, связи, связью, связи, связей, связям, связями, связях
+# # - формула, формулы, формуле, формулу, формулой, формул, формулам, формулами, формулах
+# # - вектор, вектора, вектору, вектором, векторе, векторы, векторов, векторам, векторами, векторах
+# # - эффект, эффекта, эффекту, эффектом, эффекте, эффекты, эффектов, эффектам, эффектами, эффектах
+# # - день, дня, дню, днем, дне, дни, дням, днями, днях
+# # """
+
+# # dict_words = [Morph(*line.lstrip('- ').split(', ')) for line in s.splitlines()]
+# # --------------------------------------------------------------------
+
+# dict_words = []
+# a = ['связь', 'связи', 'связью', 'связей', 'связям', 'связями', 'связях']
+# b = ['формула', 'формулы', 'формуле', 'формулу', 'формулой', 'формул', 'формулам', 'формулами', 'формулах']
+# c = ['вектор', 'вектора', 'вектору', 'вектором', 'векторе', 'векторы', 'векторов', 'векторам', 'векторами', 'векторах']
+# d = ['эффект', 'эффекта', 'эффекту', 'эффектом', 'эффекте', 'эффекты', 'эффектов', 'эффектам', 'эффектами', 'эффектах']
+# e = ['день', 'дня', 'дню', 'днем', 'дне', 'дни', 'дням', 'днями', 'днях']
+# dict_words.append(Morph('связь', 'связи', 'связью', 'связей', 'связям', 'связями', 'связях'))
+# dict_words.append(Morph('формула', 'формулы', 'формуле', 'формулу', 'формулой', 'формул', 'формулам', 'формулами', 'формулах'))
+# dict_words.append(Morph('вектор', 'вектора', 'вектору', 'вектором', 'векторе', 'векторы', 'векторов', 'векторам', 'векторами', 'векторах'))
+# dict_words.append(Morph('эффект', 'эффекта', 'эффекту', 'эффектом', 'эффекте', 'эффекты', 'эффектов', 'эффектам', 'эффектами', 'эффектах'))
+# dict_words.append(Morph('день', 'дня', 'дню', 'днем', 'дне', 'дни', 'дням', 'днями', 'днях'))
+
+
+
+# # text = input()
+# text = 'Мы будем устанавливать связь завтра днем.'
+
+# text = re.sub("[^A-Za-zА-Яа-я ]", "", text.lower())
+# text = text.split()
+
+# res = 0
+# for morph in dict_words:
+#     for word in morph.get_words():
+#         if word in text:
+#             res += 1
+# print(res)
 
 # qw = Morph('связи', 'связью', 'связей', 'связям', 'связями', 'связях')
 # print(qw.get_words())
