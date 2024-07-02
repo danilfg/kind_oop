@@ -1,27 +1,268 @@
-# 6
-class MoneyR:
-    def __init__(self, cb, volume = 0):
-        self.__cb = cb
-        self.__volume = volume
-        
-    @property
-    def cb(self):
-        return self.__cb
+# 8
+class Box:
+    def __init__(self):
+        self.objs = []
     
-    @cb.setter
-    def cb(self, value):
-        self.__cb = value
+    def add_thing(self, obj):
+        self.objs.append(obj)
         
-    @property
-    def volume(self):
-        return self.__volume
+    def get_things(self):
+        return self.objs
     
-    @cb.setter
-    def volume(self, value):
-        self.__volume = value
-
+    @staticmethod
+    def get_list_info(objs):
+        res = []
+        for obj in objs:
+            res.append(obj.get_info())
+        return res
+    
     def __eq__(self, other):
-        return self.__volume
+        box1 = sorted(self.get_list_info(self.objs))
+        box2 = sorted(self.get_list_info(other.objs))
+        return box1 == box2
+    
+class Thing:
+    def __init__(self, name, mass):
+        self.name = name
+        self.mass = mass
+        
+    def __eq__(self, other):
+        return all([self.name.lower() == other.name.lower(), self.mass == other.mass])
+
+    def get_info(self):
+        return [self.name, self.mass]
+
+b1 = Box()
+b2 = Box()
+
+b1.add_thing(Thing('мел', 100))
+b1.add_thing(Thing('тряпка', 200))
+b1.add_thing(Thing('доска', 2000))
+
+b2.add_thing(Thing('тряпка', 200))
+b2.add_thing(Thing('мел', 100))
+b2.add_thing(Thing('доска', 2000))
+t1 = Thing('тряпка', 200)
+t2 = Thing('Мел', 100)
+t3 = Thing('мел', 100)
+print(t1 == t2)
+print(t2 == t3)
+
+res = b1 == b2 # True
+print(res)
+"""
+Подвиг 10. Объявите в программе класс с именем Box (ящик), объекты которого должны создаваться командой:
+
+box = Box()
+А сам класс иметь следующие методы:
+
+add_thing(self, obj) - добавление предмета obj (объект другого класса Thing) в ящик;
+get_things(self) - получение списка объектов ящика.
+
+Для описания предметов необходимо объявить еще один класс Thing. Объекты этого класса должны создаваться командой:
+
+obj = Thing(name, mass)
+где name - название предмета (строка); mass - масса предмета (число: целое или вещественное).
+Объекты класса Thing должны поддерживать операторы сравнения:
+
+obj1 == obj2
+obj1 != obj2
+Предметы считаются равными, если у них одинаковые названия name (без учета регистра) и массы mass.
+
+Также объекты класса Box должны поддерживать аналогичные операторы сравнения:
+
+box1 == box2
+box1 != box2
+Ящики считаются равными, если одинаковы их содержимое (для каждого объекта класса Thing одного ящика и можно найти ровно один равный объект из второго ящика).
+
+Пример использования классов:
+
+b1 = Box()
+b2 = Box()
+
+b1.add_thing(Thing('мел', 100))
+b1.add_thing(Thing('тряпка', 200))
+b1.add_thing(Thing('доска', 2000))
+
+b2.add_thing(Thing('тряпка', 200))
+b2.add_thing(Thing('мел', 100))
+b2.add_thing(Thing('доска', 2000))
+
+res = b1 == b2 # True
+P.S. В программе только объявить классы, выводить на экран ничего не нужно.
+"""
+# # 7
+# class Body:
+#     def __init__(self, name, ro, volume):
+#         self.name = name
+#         self.ro = ro
+#         self.volume = volume
+        
+#     def get_m(self):
+#         return self.ro * self.volume
+    
+#     def __eq__(self, other):
+#         other = other.get_m() if isinstance(other, Body) else other
+#         return self.get_m() == other
+    
+#     def __lt__(self, other):
+#         other = other.get_m() if isinstance(other, Body) else other
+#         return self.get_m() < other
+# # 6        
+# class MoneyR:
+#     def __init__(self, volume = 0):
+#         self.__cb = None
+#         self.__volume = volume
+        
+#     @property
+#     def cb(self):
+#         return self.__cb
+    
+#     @cb.setter
+#     def cb(self, value):
+#         self.__cb = value
+        
+#     @property
+#     def volume(self):
+#         return self.__volume
+    
+
+#     def __eq__(self, other):
+#         if not self.cb or not other.cb:
+#             raise ValueError("Неизвестен курс валют.")
+#         wallet1 = self.__cb.curs_transfer(self)
+#         wallet2 = self.__cb.curs_transfer(other)
+#         return wallet1 <= wallet2 + wallet2 * 0.1
+    
+#     def __lt__(self, other):
+#         if not self.cb or not other.cb:
+#             raise ValueError("Неизвестен курс валют.")
+#         wallet1 = self.__cb.curs_transfer(self)
+#         wallet2 = self.__cb.curs_transfer(other)
+#         return wallet1 < wallet2
+    
+#     def __le__(self, other):
+#         return self.__volume <= other.__volume
+
+
+# class MoneyD:
+#     def __init__(self, volume = 0):
+#         self.__cb = None
+#         self.__volume = volume
+        
+#     @property
+#     def cb(self):
+#         return self.__cb
+    
+#     @cb.setter
+#     def cb(self, value):
+#         self.__cb = value
+        
+#     @property
+#     def volume(self):
+#         return self.__volume
+    
+
+#     def __eq__(self, other):
+#         if not self.cb or not other.cb:
+#             raise ValueError("Неизвестен курс валют.")
+#         wallet1 = self.__cb.curs_transfer(self)
+#         wallet2 = self.__cb.curs_transfer(other)
+#         return wallet1 <= wallet2 + wallet2 * 0.1
+    
+#     def __lt__(self, other):
+#         if not self.cb or not other.cb:
+#             raise ValueError("Неизвестен курс валют.")
+#         wallet1 = self.__cb.curs_transfer(self)
+#         wallet2 = self.__cb.curs_transfer(other)
+#         return wallet1 < wallet2
+    
+#     def __le__(self, other):
+#         return self.__volume <= other.__volume
+
+
+# class MoneyE:
+#     def __init__(self, volume = 0):
+#         self.__cb = None
+#         self.__volume = volume
+        
+#     @property
+#     def cb(self):
+#         return self.__cb
+    
+#     @cb.setter
+#     def cb(self, value):
+#         self.__cb = value
+        
+#     @property
+#     def volume(self):
+#         return self.__volume
+
+#     def __eq__(self, other):
+#         if not self.cb or not other.cb:
+#             raise ValueError("Неизвестен курс валют.")
+#         wallet1 = self.__cb.curs_transfer(self)
+#         wallet2 = self.__cb.curs_transfer(other)
+#         return wallet1 <= wallet2 + wallet2 * 0.1
+    
+#     def __lt__(self, other):
+#         if not self.cb or not other.cb:
+#             raise ValueError("Неизвестен курс валют.")
+#         wallet1 = self.__cb.curs_transfer(self)
+#         wallet2 = self.__cb.curs_transfer(other)
+#         return wallet1 < wallet2
+    
+#     def __le__(self, other):
+#         return self.__volume <= other.__volume
+    
+    
+# class CentralBank:
+#     def __new__(cls, *args, **kwargs):
+#         return None
+    
+#     def __init__(self):
+#         self.__rates = None
+        
+#     @property
+#     def rates(self):
+#         return self.__rates
+    
+#     @rates.setter
+#     def rates(self, value):
+#         self.__rates = value
+    
+#     @classmethod
+#     def register(cls, wallet):
+#         wallet.cb = cls
+        
+#     @staticmethod
+#     def curs_transfer(wallet):
+#         if not wallet.cb or not CentralBank.rates:
+#             raise ValueError("Неизвестен курс валют.")
+#         if isinstance(wallet, MoneyR):
+#             return wallet.volume
+#         if isinstance(wallet, MoneyD):
+#             return wallet.volume * wallet.cb.rates['rub']
+#         if isinstance(wallet, MoneyE):
+#             return wallet.volume * wallet.cb.rates['rub'] * wallet.cb.rates['euro']
+        
+        
+# CentralBank.rates = {'rub': 72.5, 'dollar': 1.0, 'euro': 1.15}
+# # print(CentralBank.rates)
+
+# r = MoneyR(45000)
+# d = MoneyD(500)
+
+# CentralBank.register(r)
+# CentralBank.register(d)
+# # print('r', r.cb.rates['rub'])
+# # print('d', d.cb.rates['rub'])
+
+# if r > d:
+#     print("неплохо")
+# else:
+#     print("нужно поднажать")
+    
 
 # # 5
 # class FileAcceptor:
@@ -323,6 +564,7 @@ class MoneyR:
 #         return self.seconds > other
     
 #     def __ge__(self, other):
+#         
 #         sc = self.__verify_data(other)
 #         return self.seconds > other
         
