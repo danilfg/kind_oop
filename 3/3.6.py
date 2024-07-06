@@ -1,25 +1,53 @@
-import sys
+# 6
 
-
-class BookStudy:
-    def __init__(self, name, author, year):
-        self.name = name
-        self.author = author
-        self.year = int(year)
-
-    def __hash__(self):
-        return hash((self.name.lower(), self.author.lower()))
+# # 5
+# class Dimensions:
+#     def __init__(self, a, b, c):
+#         self.a = int(a) if isinstance(a, int) else float(a)
+#         self.b = int(b) if isinstance(b, int) else float(b)
+#         self.c = int(c) if isinstance(c, int) else float(c)
+        
+#     def __setattr__(self, key, value):
+#         if value <= 0:
+#             raise ValueError("габаритные размеры должны быть положительными числами")
+#         super().__setattr__(key, value)
+        
+#     def __hash__(self):
+#         return hash((self.a, self.b, self.c,))
     
-    def __eq__(self, other):
-        return hash((self.name.lower(), self.author.lower())) == hash((other.name.lower(), other.author.lower()))
+    
+# # dim = Dimentions(2,0,4)
+# # lst = input()
+
+# # s_inp = "1 2 3; 4 5 6.78; 1 2 3; 3 1 2.5"
+# s_inp = s_inp.split('; ')
+# # print(list(map(lambda x: x.split(), s_inp)))
+# lst_dims = list(map(lambda x: Dimensions(*x.split()), s_inp))
+# lst_dims = sorted(lst_dims, key=hash)
+
+# 4
+# import sys
 
 
-sys.stdin = open('3.6.4.py.txt', 'r', encoding='utf-8')
-lst_in = list(map(str.strip, sys.stdin.readlines()))  # считывание списка строк из входного потока
+# class BookStudy:
+#     def __init__(self, name, author, year):
+#         self.name = name
+#         self.author = author
+#         self.year = int(year)
 
-lst_bs = [BookStudy(*lst.split('; ')) for lst in lst_in]
-unique_books = len(set(lst_bs))
-print(unique_books)
+#     def __hash__(self):
+#         return hash((self.name.lower(), self.author.lower()))
+    
+#     def __eq__(self, other):
+#         return hash((self.name.lower(), self.author.lower())) == hash((other.name.lower(), other.author.lower()))
+
+
+# sys.stdin = open('3.6.4.py.txt', 'r', encoding='utf-8')
+# lst_in = list(map(str.strip, sys.stdin.readlines()))  # считывание списка строк из входного потока
+
+# lst_bs = [BookStudy(*lst.split('; ')) for lst in lst_in]
+# unique_books = len(set(lst_bs))
+# print(unique_books)
 
 # # 3
 # import sys
