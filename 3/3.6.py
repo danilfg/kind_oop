@@ -1,4 +1,129 @@
 # 6
+class PositiveValue:
+    def __set_name__(self, owner, name):
+        # print('__set_name__', owner, name)
+        self.name = "_" + name
+        
+    def __get__(self, instance, owner):
+        # print('__get__', instance, owner)
+        
+        return getattr(instance, self.name, None)
+    
+    def __set__(self, instance, value):
+        # print('__set__', instance, value)
+        
+        if type(value) not in (int, float) or value <= 0:
+            raise ValueError("длины сторон треугольника должны быть положительными числами")
+        setattr(instance, self.name, value)
+        
+        
+class Triangle:
+    a = PositiveValue()
+    b = PositiveValue()
+    c = PositiveValue()
+    
+    def __init__(self, a, b, c):
+        self.a = a
+        self.b = b
+        self.c = c
+        
+    @staticmethod
+    def __is_triangle(a, b, c):
+        if a and b and c:
+            return a < b + c and b < a + c and c < a + b
+        return True
+
+    def __setattr__(self, key, value):
+        if (key == 'a' and not self.__is_triangle(value, self.b, self.c)) \
+            or (key == 'b' and not self.__is_triangle(self.a, value, self.c)) \
+                or (key == 'c' and not self.__is_triangle(self.a, self.b, value)):
+            raise ValueError("с указанными длинами нельзя образовать треугольник")
+        super().__setattr__(key, value)
+
+    def __len__(self):
+        return int(self.a + self.b + self.c)
+    
+    def __call__(self): # sqrt(p * (p-a) * (p-b) * (p-c))
+        a, b, c = self.a, self.b, self.c
+        p = (a + b + c) * 0.5
+        return (p * (p - a) * (p - b) * (p - c)) ** 0.5
+
+tr = Triangle(5, 4, 3)
+assert tr.a == 5 and tr.b == 4 and tr.c == 3, "дескрипторы вернули неверные значения"
+
+try:
+    tr = Triangle(-5, 4, 3)
+except ValueError:
+    assert True
+else:
+    assert False, "не сгенерировалось исключение ValueError"
+
+
+try:
+    tr = Triangle(10, 1, 1)
+except ValueError:
+    assert True
+else:
+    assert False, "не сгенерировалось исключение ValueError"
+
+    
+tr = Triangle(5, 4, 3)
+assert len(tr) == 12, "функция len вернула неверное значение"
+assert 5.9 < tr() < 6.1, "метод __call__ вернул неверное значение"
+# # class Triangle:
+#     def __init__(self, a, b, c):
+#         self.__a = a
+#         self.__b = b
+#         self.__c = c
+        
+#     @property
+#     def a(self):
+#         return self.__a
+    
+#     @a.setter
+#     def a(self, value):
+#         self.__a = value
+
+#     @property
+#     def b(self):
+#         return self.__b
+    
+#     @b.setter
+#     def b(self, value):
+#         self.__b = value
+        
+#     @property
+#     def c(self):
+#         return self.__c
+    
+#     @c.setter
+#     def c(self, value):
+#         self.__c = value
+        
+#     def __setattr__(self, key, value):
+#         print(key, value)
+#         if value <= 0:
+#             raise ValueError("длины сторон треугольника должны быть положительными числами")
+#         if key == 'a' and value >= self.b + self.c:
+#             print(value)
+#             raise ValueError("с указанными длинами нельзя образовать треугольник")
+#         if key == 'b' and value >= self.__a + self.__c:
+#             raise ValueError("с указанными длинами нельзя образовать треугольник")
+#         if key == 'c' and value >= self.__a + self.__b:
+#             raise ValueError("с указанными длинами нельзя образовать треугольник")
+#         super().__setattr__(key, value)
+        
+#     def __len__(self):
+#         return int(self.__a + self.__b + self.__c)
+    
+#     def __call__(self): # sqrt(p * (p-a) * (p-b) * (p-c))
+#         p = len(self) / 2
+#         a = self.__a
+#         b = self.__b
+#         c = self.__c
+#         return (p * (p-a) * (p-b) * (p-c)) ** 0.5
+    
+    
 
 # # 5
 # class Dimensions:
