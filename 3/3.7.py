@@ -96,25 +96,25 @@ class GamePole:
     def init_pole(self):
         self.create_pole()
         self.create_ids_mines()
-        print(self.mines)
+        # print(self.mines)
         for i, j in self.mines:
-            print(i,j)
             self.__pole_cells[i][j].is_mine = True
-            if i == 0 and j != 0:
-                self.__pole_cells[i][j - 1].number += 1
-                self.__pole_cells[i][j + 1].number += 1
-                self.__pole_cells[i + 1][j - 1].number += 1
-                self.__pole_cells[i + 1][j].number += 1
-                self.__pole_cells[i + 1][j + 1].number += 1
-            if i != 0 and j == 0:
+            if (i - 1 >= 0) and (j - 1 >= 0):
+                self.__pole_cells[i - 1][j - 1].number += 1
+            if i - 1 >= 0:
                 self.__pole_cells[i - 1][j].number += 1
+            if (i - 1 >= 0) and (j + 1 <= len(self.__pole_cells[0]) - 1):
                 self.__pole_cells[i - 1][j + 1].number += 1
+            if j - 1 >= 0:
+                self.__pole_cells[i][j - 1].number += 1
+            if j + 1 <= len(self.__pole_cells[0]) - 1:
                 self.__pole_cells[i][j + 1].number += 1
+            if (i + 1 <= len(self.__pole_cells) - 1) and (j - 1 >= 0):
+                self.__pole_cells[i + 1][j - 1].number += 1
+            if i + 1 <= len(self.__pole_cells) - 1:
+                self.__pole_cells[i + 1][j].number += 1
+            if (i + 1 <= len(self.__pole_cells) - 1) and (j + 1 <= len(self.__pole_cells[0]) - 1):
                 self.__pole_cells[i + 1][j + 1].number += 1
-                self.__pole_cells[i + 1][j + 1].number += 1
-                
-                
-    
     def open_cell(self, i, j):
         if (i > len(self.__pole_cells) - 1) or (j > len(self.__pole_cells[0]) - 1):
             raise IndexError('некорректные индексы i, j клетки игрового поля')
@@ -138,7 +138,7 @@ class GamePole:
                 if c.is_mine:
                     print('M', end=' ')
                 else:
-                    print('+', end=' ')
+                    print(c.number, end=' ')
             print()
     
 
@@ -203,8 +203,11 @@ if pole.pole[0][1]:
 if pole.pole[3][5]:
     pole.open_cell(3, 5)
 # pole.open_cell(30, 100)  # генерируется исключение IndexError
-print(pole.mines)
-pole.show_pole_cheat()
+pole.open_cell(3, 5)
+print(len(pole.mines))
+# pole.show_pole_cheat()
+# pole.show_pole()
+
 # pole.show_pole()
 # # 4
 # class Ellipse:
