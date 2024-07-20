@@ -58,153 +58,153 @@
 # print('v4', v4.coords)
 
 
-# 5
-import random
+# # 5
+# import random
 
 
-class GamePole:
-    __instance = None
+# class GamePole:
+#     __instance = None
 
-    def __init__(self, N, M, total_mines):
-        self.N = N
-        self.M = M
-        self.total_mines = total_mines
-        self.mines = tuple()
-        self.__pole_cells = (())
+#     def __init__(self, N, M, total_mines):
+#         self.N = N
+#         self.M = M
+#         self.total_mines = total_mines
+#         self.mines = tuple()
+#         self.__pole_cells = (())
         
-    def __new__(cls, *args):
-        if cls.__instance is None:
-            cls.__instance = super().__new__(cls)
-        return cls.__instance
+#     def __new__(cls, *args):
+#         if cls.__instance is None:
+#             cls.__instance = super().__new__(cls)
+#         return cls.__instance
     
-    @property
-    def pole(self):
-        return self.__pole_cells
+#     @property
+#     def pole(self):
+#         return self.__pole_cells
     
-    def create_pole(self):
-        self.__pole_cells = tuple()
-        for _ in range(self.N):
-            tmp = tuple()
-            for _ in range(self.M):
-                tmp += (Cell(),)
-            self.__pole_cells += (tmp,)
+#     def create_pole(self):
+#         self.__pole_cells = tuple()
+#         for _ in range(self.N):
+#             tmp = tuple()
+#             for _ in range(self.M):
+#                 tmp += (Cell(),)
+#             self.__pole_cells += (tmp,)
     
-    def create_ids_mines(self):
-        for _ in range(self.total_mines):
-            self.mines += ((random.randint(0, self.N - 1), random.randint(0, self.M - 1)),)
+#     def create_ids_mines(self):
+#         for _ in range(self.total_mines):
+#             self.mines += ((random.randint(0, self.N - 1), random.randint(0, self.M - 1)),)
 
-    def init_pole(self):
-        self.create_pole()
-        self.create_ids_mines()
-        # print(self.mines)
-        for i, j in self.mines:
-            self.__pole_cells[i][j].is_mine = True
-            if (i - 1 >= 0) and (j - 1 >= 0):
-                self.__pole_cells[i - 1][j - 1].number += 1
-            if i - 1 >= 0:
-                self.__pole_cells[i - 1][j].number += 1
-            if (i - 1 >= 0) and (j + 1 <= len(self.__pole_cells[0]) - 1):
-                self.__pole_cells[i - 1][j + 1].number += 1
-            if j - 1 >= 0:
-                self.__pole_cells[i][j - 1].number += 1
-            if j + 1 <= len(self.__pole_cells[0]) - 1:
-                self.__pole_cells[i][j + 1].number += 1
-            if (i + 1 <= len(self.__pole_cells) - 1) and (j - 1 >= 0):
-                self.__pole_cells[i + 1][j - 1].number += 1
-            if i + 1 <= len(self.__pole_cells) - 1:
-                self.__pole_cells[i + 1][j].number += 1
-            if (i + 1 <= len(self.__pole_cells) - 1) and (j + 1 <= len(self.__pole_cells[0]) - 1):
-                self.__pole_cells[i + 1][j + 1].number += 1
-    def open_cell(self, i, j):
-        if (i > len(self.__pole_cells) - 1) or (j > len(self.__pole_cells[0]) - 1):
-            raise IndexError('некорректные индексы i, j клетки игрового поля')
-        self.__pole_cells[i][j].is_open = True
+#     def init_pole(self):
+#         self.create_pole()
+#         self.create_ids_mines()
+#         # print(self.mines)
+#         for i, j in self.mines:
+#             self.__pole_cells[i][j].is_mine = True
+#             if (i - 1 >= 0) and (j - 1 >= 0):
+#                 self.__pole_cells[i - 1][j - 1].number += 1
+#             if i - 1 >= 0:
+#                 self.__pole_cells[i - 1][j].number += 1
+#             if (i - 1 >= 0) and (j + 1 <= len(self.__pole_cells[0]) - 1):
+#                 self.__pole_cells[i - 1][j + 1].number += 1
+#             if j - 1 >= 0:
+#                 self.__pole_cells[i][j - 1].number += 1
+#             if j + 1 <= len(self.__pole_cells[0]) - 1:
+#                 self.__pole_cells[i][j + 1].number += 1
+#             if (i + 1 <= len(self.__pole_cells) - 1) and (j - 1 >= 0):
+#                 self.__pole_cells[i + 1][j - 1].number += 1
+#             if i + 1 <= len(self.__pole_cells) - 1:
+#                 self.__pole_cells[i + 1][j].number += 1
+#             if (i + 1 <= len(self.__pole_cells) - 1) and (j + 1 <= len(self.__pole_cells[0]) - 1):
+#                 self.__pole_cells[i + 1][j + 1].number += 1
+#     def open_cell(self, i, j):
+#         if (i > len(self.__pole_cells) - 1) or (j > len(self.__pole_cells[0]) - 1):
+#             raise IndexError('некорректные индексы i, j клетки игрового поля')
+#         self.__pole_cells[i][j].is_open = True
 
-    def show_pole(self):
-        for row in self.__pole_cells:
-            for c in row:
-                if c.is_open:
-                    if c.is_mine:
-                        print('M', end=' ')
-                    else:
-                        print(c.number, end=' ')
-                else:
-                    print('+', end=' ')
-            print()
+#     def show_pole(self):
+#         for row in self.__pole_cells:
+#             for c in row:
+#                 if c.is_open:
+#                     if c.is_mine:
+#                         print('M', end=' ')
+#                     else:
+#                         print(c.number, end=' ')
+#                 else:
+#                     print('+', end=' ')
+#             print()
             
-    def show_pole_cheat(self):
-        for row in self.__pole_cells:
-            for c in row:
-                if c.is_mine:
-                    print('M', end=' ')
-                else:
-                    print(c.number, end=' ')
-            print()
+#     def show_pole_cheat(self):
+#         for row in self.__pole_cells:
+#             for c in row:
+#                 if c.is_mine:
+#                     print('M', end=' ')
+#                 else:
+#                     print(c.number, end=' ')
+#             print()
     
 
-class Cell:
+# class Cell:
     
-    def __init__(self):
-        self.__is_mine = False
-        self.__number = 0
-        self.__is_open = False
+#     def __init__(self):
+#         self.__is_mine = False
+#         self.__number = 0
+#         self.__is_open = False
     
-    @property
-    def is_mine(self):
-        return self.__is_mine
+#     @property
+#     def is_mine(self):
+#         return self.__is_mine
     
-    @is_mine.setter
-    def is_mine(self, value):
-        self.__is_mine = value
+#     @is_mine.setter
+#     def is_mine(self, value):
+#         self.__is_mine = value
         
-    @property
-    def number(self):
-        return self.__number
+#     @property
+#     def number(self):
+#         return self.__number
     
-    @number.setter
-    def number(self, value):
-        self.__number = value
+#     @number.setter
+#     def number(self, value):
+#         self.__number = value
     
-    @property
-    def is_open(self):
-        return self.__is_open
+#     @property
+#     def is_open(self):
+#         return self.__is_open
     
-    @is_open.setter
-    def is_open(self, value):
-        self.__is_open = value
+#     @is_open.setter
+#     def is_open(self, value):
+#         self.__is_open = value
         
-    def __setattr__(self, key, value):
-        if (key in ('_Cell__is_mine', '_Cell__is_open') and not isinstance(value, bool)) \
-            or (key == '_Cell__number' and (not (0 <= value <= 8) or not isinstance(value, int))):
-            raise ValueError("недопустимое значение атрибута")
-        super().__setattr__(key, value)
+#     def __setattr__(self, key, value):
+#         if (key in ('_Cell__is_mine', '_Cell__is_open') and not isinstance(value, bool)) \
+#             or (key == '_Cell__number' and (not (0 <= value <= 8) or not isinstance(value, int))):
+#             raise ValueError("недопустимое значение атрибута")
+#         super().__setattr__(key, value)
     
-    def __bool__(self):
-        return not self.is_open
+#     def __bool__(self):
+#         return not self.is_open
 
-# pole = GamePole(N, M, total_mines)
-# c1 = Cell()
-# c1.is_mine = True
-# # c1.number = 9
+# # pole = GamePole(N, M, total_mines)
+# # c1 = Cell()
+# # c1.is_mine = True
+# # # c1.number = 9
 
-# print(c1.is_open)
-# c1.is_open = True
-# print(c1.is_open)
+# # print(c1.is_open)
+# # c1.is_open = True
+# # print(c1.is_open)
 
-# c2 = Cell()
+# # c2 = Cell()
+# # pole = GamePole(10, 20, 10)  # создается поле размерами 10x20 с общим числом мин 10
+# # pole.init_pole()
+# # pole.show_pole()
 # pole = GamePole(10, 20, 10)  # создается поле размерами 10x20 с общим числом мин 10
 # pole.init_pole()
-# pole.show_pole()
-pole = GamePole(10, 20, 10)  # создается поле размерами 10x20 с общим числом мин 10
-pole.init_pole()
-if pole.pole[0][1]:
-    pole.open_cell(0, 1)
-# print(pole.pole[3][5])
-if pole.pole[3][5]:
-    pole.open_cell(3, 5)
-# pole.open_cell(30, 100)  # генерируется исключение IndexError
-pole.open_cell(3, 5)
-print(len(pole.mines))
+# if pole.pole[0][1]:
+#     pole.open_cell(0, 1)
+# # print(pole.pole[3][5])
+# if pole.pole[3][5]:
+#     pole.open_cell(3, 5)
+# # pole.open_cell(30, 100)  # генерируется исключение IndexError
+# pole.open_cell(3, 5)
+# print(len(pole.mines))
 # pole.show_pole_cheat()
 # pole.show_pole()
 
