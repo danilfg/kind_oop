@@ -1,6 +1,104 @@
-# 3
+# 5
 
 
+# 4
+class IntegerValue: # дескриптор данных для работы с целыми числами.
+    def __set_name__(self, owner, name):
+        self.name = "_" + name
+        
+    def __get__(self, instance, owner):
+        # return instance.__dict__[self.name]
+        return getattr(instance, self.name)
+    
+    def __set__(self, instance, value):
+        # print(f"__set__: {self.name} = {value}")
+        if not isinstance(value, int):
+            raise ValueError('возможны только целочисленные значения')
+        # instance.__dict__[self.name] = value
+        setattr(instance, self.name, value)
+        
+        
+class CellInteger: # для операций с целыми числами;
+    value = IntegerValue()
+    
+    def __init__(self, start_value = 0):
+        self.value = start_value
+    
+
+class TableValues: # для работы с таблицей в целом
+    def __init__(self, rows, cols, cell = False):
+        if not cell:
+            raise ValueError('параметр cell не указан') 
+        self.cells = tuple()
+        for _ in range(rows):
+            res = tuple(CellInteger() for _ in range(cols))
+            self.cells += res,
+
+    def __getitem__(self, item):
+        if item[0] >= len(self.cells) or item[1] >= len(self.cells[0]):
+            raise ValueError('ячейки не существует')
+        return self.cells[item[0]][item[1]].value
+    
+    def __setitem__(self, key, value):
+        if key[0] >= len(self.cells) or key[1] >= len(self.cells[0]):
+            raise ValueError('ячейки не существует')
+        self.cells[key[0]][key[1]].value = value
+    
+    
+table = TableValues(2, 3, cell=CellInteger)
+print(table[0, 1])
+table[1, 1] = 10
+# table[0, 0] = 1.45 # генерируется исключение ValueError
+
+# вывод таблицы в консоль
+for row in table.cells:
+    for x in row:
+        print(x.value, end=' ')
+    print()
+
+
+# # 3
+# class Array:
+#     def __init__(self, max_lenght, cell):
+#         self.array = [cell(0) for _ in range(max_lenght)]
+        
+#     def __getitem__(self, item):
+#         if item > len(self.array) - 1:
+#             raise IndexError('неверный индекс для доступа к элементам массива')
+#         return self.array[item].value
+    
+#     def __setitem__(self, key, value):
+#         if key > len(self.array) - 1:
+#             raise IndexError('неверный индекс для доступа к элементам массива')
+#         self.array[key].value = value
+    
+#     def __str__(self):
+#         res = [str(x.value) for x in self.array]
+#         return " ".join(res)
+        
+        
+# class Integer:
+#     def __init__(self, start_value):
+#         self.__value = start_value
+        
+#     @property
+#     def value(self):
+#         return self.__value
+    
+#     @value.setter
+#     def value(self, val):
+#         if isinstance(val, int):
+#             self.__value = val
+#         else:
+#             raise ValueError('должно быть целое число')
+
+        
+# ar_int = Array(10, cell=Integer)
+# print(ar_int[3])
+# print(ar_int) # должны отображаться все значения массива в одну строчку через пробел
+# ar_int[1] = 10
+# # ar_int[1] = 10.5 # должно генерироваться исключение ValueError
+# ar_int[10] = 1 # должно генерироваться исключение IndexError
 # # 2
 # class Track:
 #     def __init__(self, start_x, start_y):
