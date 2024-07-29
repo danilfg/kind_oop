@@ -1,60 +1,161 @@
 # 5
-
-
-# 4
-class IntegerValue: # дескриптор данных для работы с целыми числами.
-    def __set_name__(self, owner, name):
-        self.name = "_" + name
+class Stack:
+    def __init__(self):
+        self.__stack_objs = []
+        self.top = None
         
-    def __get__(self, instance, owner):
-        # return instance.__dict__[self.name]
-        return getattr(instance, self.name)
-    
-    def __set__(self, instance, value):
-        # print(f"__set__: {self.name} = {value}")
-        if not isinstance(value, int):
-            raise ValueError('возможны только целочисленные значения')
-        # instance.__dict__[self.name] = value
-        setattr(instance, self.name, value)
-        
-        
-class CellInteger: # для операций с целыми числами;
-    value = IntegerValue()
-    
-    def __init__(self, start_value = 0):
-        self.value = start_value
-    
+    def push(self, obj):
+        if not self.top:
+            self.top = obj
+        else:
+            self.__stack_objs[-1].next = obj
+        self.__stack_objs.append(obj)
+            
+    def pop(self):
+        res = self.__stack_objs[-1]
+        if self.__stack_objs:
+            self.__stack_objs = self.__stack_objs[:-1]
+        if not self.__stack_objs:
+            self.top = None
+        self.__stack_objs[-1].next = None
+        return res
 
-class TableValues: # для работы с таблицей в целом
-    def __init__(self, rows, cols, cell = False):
-        if not cell:
-            raise ValueError('параметр cell не указан') 
-        self.cells = tuple()
-        for _ in range(rows):
-            res = tuple(CellInteger() for _ in range(cols))
-            self.cells += res,
-
+    def __len__(self):
+        return len(self.__stack_objs)
+    
     def __getitem__(self, item):
-        if item[0] >= len(self.cells) or item[1] >= len(self.cells[0]):
-            raise ValueError('ячейки не существует')
-        return self.cells[item[0]][item[1]].value
+        if item >= len(self.__stack_objs) or not isinstance(item, int):
+            raise IndexError('неверный индекс')
+        return self.__stack_objs[item]
     
     def __setitem__(self, key, value):
-        if key[0] >= len(self.cells) or key[1] >= len(self.cells[0]):
-            raise ValueError('ячейки не существует')
-        self.cells[key[0]][key[1]].value = value
-    
-    
-table = TableValues(2, 3, cell=CellInteger)
-print(table[0, 1])
-table[1, 1] = 10
-# table[0, 0] = 1.45 # генерируется исключение ValueError
+        if key >= len(self.__stack_objs) or not isinstance(key, int):
+            raise IndexError('неверный индекс')
+        self.__stack_objs[key] = value
+        if key != len(self.__stack_objs) - 1:
+            self.__stack_objs[key].next = self.__stack_objs[key + 1]
+        if key != 0:
+            self.__stack_objs[key - 1].next = self.__stack_objs[key]
+            
+        
+    def __str__(self):
+        return f'\n'.join([x.data for x in self.__stack_objs])
 
-# вывод таблицы в консоль
-for row in table.cells:
-    for x in row:
-        print(x.value, end=' ')
-    print()
+class StackObj:
+    def __init__(self, data):
+        self.__data = data
+        self.__next = None
+        
+    @property
+    def data(self):
+        return self.__data
+    
+    @data.setter
+    def data(self, value):
+        self.__data = value
+    @property
+    def next(self):
+        return self.__next
+    
+    @next.setter
+    def next(self, value):
+        self.__next = value
+
+# st = Stack()
+# st.push(StackObj("obj1"))
+# st.push(StackObj("obj2"))
+# st.push(StackObj("obj3"))
+# st[1] = StackObj("new obj2")
+# print(st[2].data) # obj3
+# print(st[1].data) # new obj2
+# res = st[3] # исключение IndexError
+st = Stack()
+st.push(StackObj("obj11"))
+st.push(StackObj("obj12"))
+st.push(StackObj("obj13"))
+st[1] = StackObj("obj2-new")
+assert st[0].data == "obj11" and st[1].data == "obj2-new", "атрибут data объекта класса StackObj содержит неверные данные"
+
+try:
+    obj = st[3]
+except IndexError:
+    assert True
+else:
+    assert False, "не сгенерировалось исключение IndexError"
+
+obj = st.pop()
+assert obj.data == "obj13", "метод pop должен удалять последний объект стека и возвращать его"
+print('2222222', st)
+n = 0
+h = st.top
+# print(n, h.data)
+while h:
+    assert isinstance(h, StackObj), "объект стека должен быть экземпляром класса StackObj"
+    print(n, h.data)
+    n += 1
+    
+    h = h.next
+    # print(n, h.data)
+    
+# print(n, h)
+print('st2', len(st))
+print('n', n)
+assert n == 2, "неверное число объектов в стеке (возможно, нарушена его структура)"
+
+# 4
+# class IntegerValue: # дескриптор данных для работы с целыми числами.
+#     def __set_name__(self, owner, name):
+#         self.name = "_" + name
+        
+#     def __get__(self, instance, owner):
+#         # return instance.__dict__[self.name]
+#         return getattr(instance, self.name)
+    
+#     def __set__(self, instance, value):
+#         # print(f"__set__: {self.name} = {value}")
+#         if not isinstance(value, int):
+#             raise ValueError('возможны только целочисленные значения')
+#         # instance.__dict__[self.name] = value
+#         setattr(instance, self.name, value)
+        
+        
+# class CellInteger: # для операций с целыми числами;
+#     value = IntegerValue()
+    
+#     def __init__(self, start_value = 0):
+#         self.value = start_value
+    
+
+# class TableValues: # для работы с таблицей в целом
+#     def __init__(self, rows, cols, cell = False):
+#         if not cell:
+#             raise ValueError('параметр cell не указан') 
+#         self.cells = tuple()
+#         for _ in range(rows):
+#             res = tuple(CellInteger() for _ in range(cols))
+#             self.cells += res,
+
+#     def __getitem__(self, item):
+#         if item[0] >= len(self.cells) or item[1] >= len(self.cells[0]):
+#             raise ValueError('ячейки не существует')
+#         return self.cells[item[0]][item[1]].value
+    
+#     def __setitem__(self, key, value):
+#         if key[0] >= len(self.cells) or key[1] >= len(self.cells[0]):
+#             raise ValueError('ячейки не существует')
+#         self.cells[key[0]][key[1]].value = value
+    
+    
+# table = TableValues(2, 3, cell=CellInteger)
+# print(table[0, 1])
+# table[1, 1] = 10
+# # table[0, 0] = 1.45 # генерируется исключение ValueError
+
+# # вывод таблицы в консоль
+# for row in table.cells:
+#     for x in row:
+#         print(x.value, end=' ')
+#     print()
 
 
 # # 3
