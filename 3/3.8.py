@@ -1,106 +1,133 @@
-# 5
-class Stack:
-    def __init__(self):
-        self.__stack_objs = []
-        self.top = None
+# 6
+class RadiusVector:
+    def __init__(self, *args):
+        self.coords = tuple(args)
         
-    def push(self, obj):
-        if not self.top:
-            self.top = obj
-        else:
-            self.__stack_objs[-1].next = obj
-        self.__stack_objs.append(obj)
-            
-    def pop(self):
-        res = self.__stack_objs[-1]
-        if self.__stack_objs:
-            self.__stack_objs = self.__stack_objs[:-1]
-        if not self.__stack_objs:
-            self.top = None
-        self.__stack_objs[-1].next = None
-        return res
-
-    def __len__(self):
-        return len(self.__stack_objs)
-    
     def __getitem__(self, item):
-        if item >= len(self.__stack_objs) or not isinstance(item, int):
-            raise IndexError('неверный индекс')
-        return self.__stack_objs[item]
+        # print(item)
+        # if item >= len(self.coords):
+        #     raise IndexError('неверный индекс')
+        return self.coords[item]
     
     def __setitem__(self, key, value):
-        if key >= len(self.__stack_objs) or not isinstance(key, int):
-            raise IndexError('неверный индекс')
-        self.__stack_objs[key] = value
-        if key != len(self.__stack_objs) - 1:
-            self.__stack_objs[key].next = self.__stack_objs[key + 1]
-        if key != 0:
-            self.__stack_objs[key - 1].next = self.__stack_objs[key]
+        self.coords = list(self.coords)
+        self.coords[key] = value
+        self.coords = tuple(self.coords)
+        
+
+            
+v = RadiusVector(1, 1, 1, 1)
+print(v[1]) # 1
+v[:] = 1, 2, 3, 4
+print(v[2]) # 3
+print(v[1:]) # (2, 3, 4)
+v[0] = 10.5
+r1 = RadiusVector(1, 3.4, 6, 23)
+print(r1.coords)
+
+
+# # 5
+# class Stack:
+#     def __init__(self):
+#         self.__stack_objs = []
+#         self.top = None
+        
+#     def push(self, obj):
+#         if not self.top:
+#             self.top = obj
+#         else:
+#             self.__stack_objs[-1].next = obj
+#         self.__stack_objs.append(obj)
+            
+#     def pop(self):
+#         res = self.__stack_objs[-1]
+#         if self.__stack_objs:
+#             self.__stack_objs = self.__stack_objs[:-1]
+#         if not self.__stack_objs:
+#             self.top = None
+#         self.__stack_objs[-1].next = None
+#         return res
+
+#     def __len__(self):
+#         return len(self.__stack_objs)
+    
+#     def __getitem__(self, item):
+#         ≈
+#         return self.__stack_objs[item]
+    
+#     def __setitem__(self, key, value):
+#         if key >= len(self.__stack_objs) or not isinstance(key, int):
+#             raise IndexError('неверный индекс')
+#         self.__stack_objs[key] = value
+#         if key != len(self.__stack_objs) - 1:
+#             self.__stack_objs[key].next = self.__stack_objs[key + 1]
+#         if key != 0:
+#             self.__stack_objs[key - 1].next = self.__stack_objs[key]
             
         
-    def __str__(self):
-        return f'\n'.join([x.data for x in self.__stack_objs])
+#     def __str__(self):
+#         return f'\n'.join([x.data for x in self.__stack_objs])
 
-class StackObj:
-    def __init__(self, data):
-        self.__data = data
-        self.__next = None
+# class StackObj:
+#     def __init__(self, data):
+#         self.__data = data
+#         self.__next = None
         
-    @property
-    def data(self):
-        return self.__data
+#     @property
+#     def data(self):
+#         return self.__data
     
-    @data.setter
-    def data(self, value):
-        self.__data = value
-    @property
-    def next(self):
-        return self.__next
+#     @data.setter
+#     def data(self, value):
+#         self.__data = value
+#     @property
+#     def next(self):
+#         return self.__next
     
-    @next.setter
-    def next(self, value):
-        self.__next = value
+#     @next.setter
+#     def next(self, value):
+#         self.__next = value
 
+# # st = Stack()
+# # st.push(StackObj("obj1"))
+# # st.push(StackObj("obj2"))
+# # st.push(StackObj("obj3"))
+# # st[1] = StackObj("new obj2")
+# # print(st[2].data) # obj3
+# # print(st[1].data) # new obj2
+# # res = st[3] # исключение IndexError
 # st = Stack()
-# st.push(StackObj("obj1"))
-# st.push(StackObj("obj2"))
-# st.push(StackObj("obj3"))
-# st[1] = StackObj("new obj2")
-# print(st[2].data) # obj3
-# print(st[1].data) # new obj2
-# res = st[3] # исключение IndexError
-st = Stack()
-st.push(StackObj("obj11"))
-st.push(StackObj("obj12"))
-st.push(StackObj("obj13"))
-st[1] = StackObj("obj2-new")
-assert st[0].data == "obj11" and st[1].data == "obj2-new", "атрибут data объекта класса StackObj содержит неверные данные"
+# st.push(StackObj("obj11"))
+# st.push(StackObj("obj12"))
+# st.push(StackObj("obj13"))
+# st[1] = StackObj("obj2-new")
+# assert st[0].data == "obj11" and st[1].data == "obj2-new", "атрибут data объекта класса StackObj содержит неверные данные"
 
-try:
-    obj = st[3]
-except IndexError:
-    assert True
-else:
-    assert False, "не сгенерировалось исключение IndexError"
+# try:
+#     obj = st[3]
+# except IndexError:
+#     assert True
+# else:
+#     assert False, "не сгенерировалось исключение IndexError"
 
-obj = st.pop()
-assert obj.data == "obj13", "метод pop должен удалять последний объект стека и возвращать его"
-print('2222222', st)
-n = 0
-h = st.top
-# print(n, h.data)
-while h:
-    assert isinstance(h, StackObj), "объект стека должен быть экземпляром класса StackObj"
-    print(n, h.data)
-    n += 1
+# obj = st.pop()
+# assert obj.data == "obj13", "метод pop должен удалять последний объект стека и возвращать его"
+# print('2222222', st)
+# n = 0
+# h = st.top
+# # print(n, h.data)
+# while h:
+#     assert isinstance(h, StackObj), "объект стека должен быть экземпляром класса StackObj"
+#     print(n, h.data)
+#     n += 1
     
-    h = h.next
-    # print(n, h.data)
+#     h = h.next
+#     # print(n, h.data)
     
-# print(n, h)
-print('st2', len(st))
-print('n', n)
-assert n == 2, "неверное число объектов в стеке (возможно, нарушена его структура)"
+# # print(n, h)
+# print('st2', len(st))
+# print('n', n)
+# assert n == 2, "неверное число объектов в стеке (возможно, нарушена его структура)"
 
 # 4
 # class IntegerValue: # дескриптор данных для работы с целыми числами.
