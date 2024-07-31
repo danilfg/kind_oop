@@ -1,29 +1,90 @@
-# 6
-class RadiusVector:
-    def __init__(self, *args):
-        self.coords = tuple(args)
+# 7
+class Cell:
+    def __init__(self):
+        self.is_free = True
+        self.value = 0 # 1 - крестик; 2 - нолик
         
-    def __getitem__(self, item):
-        # print(item)
-        # if item >= len(self.coords):
-        #     raise IndexError('неверный индекс')
-        return self.coords[item]
+    def __bool__(self):
+        return self.is_free
     
+
+    
+class TicTacToe:
+    def __init__(self):
+        self.pole = tuple(tuple(Cell() for _ in range(3)) for _ in range(3))
+        
+    def clear(self):
+        self.__init__()
+        # self.pole = tuple(tuple(Cell() for _ in range(3)) for _ in range(3))
+        
+    def __str__(self):
+        return f'\n'.join([f' '.join([str(cell.value) for cell in row]) for row in self.pole])
+    
+    def __getitem__(self, item):
+        if isinstance(item[0], slice):
+            return self.pole[0][item[1]].value, self.pole[1][item[1]].value, self.pole[2][item[1]].value, 
+        elif isinstance(item[1], slice):
+            return self.pole[item[0]][0].value, self.pole[item[0]][1].value, self.pole[item[0]][2].value,
+        elif item[0] >= 3 or item[1] >= 3:
+            raise IndexError('неверный индекс клетки')
+        return self.pole[item[0]][item[1]].value
+        
     def __setitem__(self, key, value):
-        self.coords = list(self.coords)
-        self.coords[key] = value
-        self.coords = tuple(self.coords)
+        if key[0] >= 3 or key[1] >= 3:
+            raise IndexError('неверный индекс клетки')
+        if self.pole[key[0]][key[1]].is_free:
+            self.pole[key[0]][key[1]].value = value
+        else:
+            raise ValueError('клетка уже занята')
+
+        
+        
+game = TicTacToe()
+game.clear()
+# game[0, 0] = 1
+game[1, 0] = 2
+print(game)
+# формируется поле:
+# 1 0 0
+# 2 0 0
+# 0 0 0
+# game[3, 2] = 2 # генерируется исключение IndexError
+print('value', game[0, 0])
+if game[0, 0] == 0:
+    game[0, 0] = 2
+    print(game)
+v1 = game[0, :]  # 1, 0, 0
+print(v1)
+
+v2 = game[:, 0]  # 1, 2, 0
+print(v2)
+
+# # 6
+# class RadiusVector:
+#     def __init__(self, *args):
+#         self.coords = tuple(args)
+        
+#     def __getitem__(self, item):
+#         # print(item)
+#         # if item >= len(self.coords):
+#         #     raise IndexError('неверный индекс')
+#         return self.coords[item]
+    
+#     def __setitem__(self, key, value):
+#         self.coords = list(self.coords)
+#         self.coords[key] = value
+#         self.coords = tuple(self.coords)
         
 
             
-v = RadiusVector(1, 1, 1, 1)
-print(v[1]) # 1
-v[:] = 1, 2, 3, 4
-print(v[2]) # 3
-print(v[1:]) # (2, 3, 4)
-v[0] = 10.5
-r1 = RadiusVector(1, 3.4, 6, 23)
-print(r1.coords)
+# v = RadiusVector(1, 1, 1, 1)
+# print(v[1]) # 1
+# v[:] = 1, 2, 3, 4
+# print(v[2]) # 3
+# print(v[1:]) # (2, 3, 4)
+# v[0] = 10.5
+# r1 = RadiusVector(1, 3.4, 6, 23)
+# print(r1.coords)
 
 
 # # 5
