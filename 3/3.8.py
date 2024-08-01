@@ -1,63 +1,154 @@
-# 7
-class Cell:
-    def __init__(self):
-        self.is_free = True
-        self.value = 0 # 1 - крестик; 2 - нолик
+# 8
+class Bag:
+    def __init__(self, max_weight):
+        self.max_weight = max_weight
+        self.things = []
+        self.total_weight = 0
         
-    def __bool__(self):
-        return self.is_free
-    
+        
+    def add_thing(self, thing):
+        if self.total_weight +  thing.weight > self.max_weight:
+            raise ValueError('превышен суммарный вес предметов')
+        self.things.append(thing)
+        self.total_weight += thing.weight
 
-    
-class TicTacToe:
-    def __init__(self):
-        self.pole = tuple(tuple(Cell() for _ in range(3)) for _ in range(3))
-        
-    def clear(self):
-        self.__init__()
-        # self.pole = tuple(tuple(Cell() for _ in range(3)) for _ in range(3))
-        
-    def __str__(self):
-        return f'\n'.join([f' '.join([str(cell.value) for cell in row]) for row in self.pole])
-    
     def __getitem__(self, item):
-        if isinstance(item[0], slice):
-            return self.pole[0][item[1]].value, self.pole[1][item[1]].value, self.pole[2][item[1]].value, 
-        elif isinstance(item[1], slice):
-            return self.pole[item[0]][0].value, self.pole[item[0]][1].value, self.pole[item[0]][2].value,
-        elif item[0] >= 3 or item[1] >= 3:
-            raise IndexError('неверный индекс клетки')
-        return self.pole[item[0]][item[1]].value
-        
+        if not isinstance(item, int) or item >= len(self.things):
+            raise IndexError('неверный индекс')
+        return self.things[item]
+
+    def __delitem__(self, key):
+        del self.things[key]
+
     def __setitem__(self, key, value):
-        if key[0] >= 3 or key[1] >= 3:
-            raise IndexError('неверный индекс клетки')
-        if self.pole[key[0]][key[1]].is_free:
-            self.pole[key[0]][key[1]].value = value
-        else:
-            raise ValueError('клетка уже занята')
+        if not isinstance(key, int) or key >= len(self.things):
+            raise IndexError('неверный индекс')
+        self.total_weight -= self.things[key].weight
+        if self.total_weight + value.weight > self.max_weight:
+            raise ValueError('превышен суммарный вес предметов')
+        
+        self.total_weight += value.weight
+        self.things[key] = value
+        
+        
+
+class Thing:
+    def __init__(self, name, weight):
+        self.name = name
+        self.weight = weight
+        
+b = Bag(700)
+b.add_thing(Thing('книга', 100))
+b.add_thing(Thing('носки', 200))
+
+try:
+    b.add_thing(Thing('рубашка', 500))
+except ValueError:
+    assert True
+else:
+    assert False, "не сгенерировалось исключение ValueError"
+
+assert b[0].name == 'книга' and b[0].weight == 100, "атрибуты name и weight объекта класса Thing принимают неверные значения"
+
+t = Thing('Python', 20)
+b[1] = t
+assert b[1].name == 'Python' and b[1].weight == 20, "неверные значения атрибутов name и weight, возможно, некорректно работает оператор присваивания с объектами класса Thing"
+
+del b[0]
+assert b[0].name == 'Python' and b[0].weight == 20, "некорректно отработал оператор del"
+
+try:
+    t = b[2]
+except IndexError:
+    assert True
+else:
+    assert False, "не сгенерировалось исключение IndexError"
+
+    
+b = Bag(700)
+b.add_thing(Thing('книга', 100))
+b.add_thing(Thing('носки', 200))
+
+b[0] = Thing('рубашка', 500)
+
+try:
+    b[0] = Thing('рубашка', 800)
+except ValueError:
+    assert True
+else:
+    assert False, "не сгенерировалось исключение ValueError при замене предмета в объекте класса Bag по индексу"      
+# bag = Bag(1000)
+# bag.add_thing(Thing('книга', 100))
+# bag.add_thing(Thing('носки', 200))
+# bag.add_thing(Thing('рубашка', 500))
+# # bag.add_thing(Thing('ножницы', 300)) # генерируется исключение ValueError
+# print(bag[2].name) # рубашка
+# bag[1] = Thing('платок', 100)
+# print(bag[1].name) # платок
+# del bag[0]
+# print(bag[0].name) # платок
+# # t = bag[4] # генерируется исключение IndexError
+        
+# # 7
+# class Cell:
+#     def __init__(self):
+#         self.is_free = True
+#         self.value = 0 # 1 - крестик; 2 - нолик
+        
+#     def __bool__(self):
+#         return self.is_free
+    
+
+    
+# class TicTacToe:
+#     def __init__(self):
+#         self.pole = tuple(tuple(Cell() for _ in range(3)) for _ in range(3))
+        
+#     def clear(self):
+#         self.__init__()
+#         # self.pole = tuple(tuple(Cell() for _ in range(3)) for _ in range(3))
+        
+#     def __str__(self):
+#         return f'\n'.join([f' '.join([str(cell.value) for cell in row]) for row in self.pole])
+    
+#     def __getitem__(self, item):
+#         if isinstance(item[0], slice):
+#             return self.pole[0][item[1]].value, self.pole[1][item[1]].value, self.pole[2][item[1]].value, 
+#         elif isinstance(item[1], slice):
+#             return self.pole[item[0]][0].value, self.pole[item[0]][1].value, self.pole[item[0]][2].value,
+#         elif item[0] >= 3 or item[1] >= 3:
+#             raise IndexError('неверный индекс клетки')
+#         return self.pole[item[0]][item[1]].value
+        
+#     def __setitem__(self, key, value):
+#         if key[0] >= 3 or key[1] >= 3:
+#             raise IndexError('неверный индекс клетки')
+#         if self.pole[key[0]][key[1]].is_free:
+#             self.pole[key[0]][key[1]].value = value
+#         else:
+#             raise ValueError('клетка уже занята')
 
         
         
-game = TicTacToe()
-game.clear()
-# game[0, 0] = 1
-game[1, 0] = 2
-print(game)
-# формируется поле:
-# 1 0 0
-# 2 0 0
-# 0 0 0
-# game[3, 2] = 2 # генерируется исключение IndexError
-print('value', game[0, 0])
-if game[0, 0] == 0:
-    game[0, 0] = 2
-    print(game)
-v1 = game[0, :]  # 1, 0, 0
-print(v1)
+# game = TicTacToe()
+# game.clear()
+# # game[0, 0] = 1
+# game[1, 0] = 2
+# print(game)
+# # формируется поле:
+# # 1 0 0
+# # 2 0 0
+# # 0 0 0
+# # game[3, 2] = 2 # генерируется исключение IndexError
+# print('value', game[0, 0])
+# if game[0, 0] == 0:
+#     game[0, 0] = 2
+#     print(game)
+# v1 = game[0, :]  # 1, 0, 0
+# print(v1)
 
-v2 = game[:, 0]  # 1, 2, 0
-print(v2)
+# v2 = game[:, 0]  # 1, 2, 0
+# print(v2)
 
 # # 6
 # class RadiusVector:
