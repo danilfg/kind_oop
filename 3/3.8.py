@@ -1,82 +1,167 @@
-# 8
-class Bag:
-    def __init__(self, max_weight):
-        self.max_weight = max_weight
-        self.things = []
-        self.total_weight = 0
+# 9
+class SparseTable:
+    def __init__(self):
+        self.rows = 0
+        self.cols = 0
+        self.table = {}
+    
+    def set_rows_cols(self):
+        self.rows = max([x[0] for x in self.table.keys()]) + 1
+        self.cols = max([x[1] for x in self.table.keys()]) + 1
+    
+    def add_data(self, row, col, data):
+        self.table[(row, col)] = data
+        self.set_rows_cols()
         
-        
-    def add_thing(self, thing):
-        if self.total_weight +  thing.weight > self.max_weight:
-            raise ValueError('превышен суммарный вес предметов')
-        self.things.append(thing)
-        self.total_weight += thing.weight
-
+    def remove_data(self, row, col):
+        if (row, col) not in self.table:
+            raise IndexError('ячейка с указанными индексами не существует')
+        self.table.pop((row, col), None)
+        self.set_rows_cols()
+    
     def __getitem__(self, item):
-        if not isinstance(item, int) or item >= len(self.things):
-            raise IndexError('неверный индекс')
-        return self.things[item]
-
-    def __delitem__(self, key):
-        del self.things[key]
-
+        if item not in self.table:
+            raise ValueError('данные по указанным индексам отсутствуют')
+        return self.table[item]
+    
     def __setitem__(self, key, value):
-        if not isinstance(key, int) or key >= len(self.things):
-            raise IndexError('неверный индекс')
-        self.total_weight -= self.things[key].weight
-        if self.total_weight + value.weight > self.max_weight:
-            raise ValueError('превышен суммарный вес предметов')
-        
-        self.total_weight += value.weight
-        self.things[key] = value
-        
-        
+        self.table[key] = value
+        row = key[0]
+        col = key[1]
+        self.set_rows_cols()
+    
+class Cell:
+    def __init__(self, value):
+        self.value = value
 
-class Thing:
-    def __init__(self, name, weight):
-        self.name = name
-        self.weight = weight
-        
-b = Bag(700)
-b.add_thing(Thing('книга', 100))
-b.add_thing(Thing('носки', 200))
+st = SparseTable()
+st.add_data(2, 5, Cell(25))
+st.add_data(1, 1, Cell(11))
+assert st.rows == 3 and st.cols == 6, "неверные значения атрибутов rows и cols"
 
 try:
-    b.add_thing(Thing('рубашка', 500))
+    v = st[3, 2]
 except ValueError:
     assert True
 else:
     assert False, "не сгенерировалось исключение ValueError"
 
-assert b[0].name == 'книга' and b[0].weight == 100, "атрибуты name и weight объекта класса Thing принимают неверные значения"
+st[3, 2] = 100
+assert st[3, 2] == 100, "неверно отработал оператор присваивания нового значения в ячейку таблицы"
+assert st.rows == 4 and st.cols == 6, "неверные значения атрибутов rows и cols"
 
-t = Thing('Python', 20)
-b[1] = t
-assert b[1].name == 'Python' and b[1].weight == 20, "неверные значения атрибутов name и weight, возможно, некорректно работает оператор присваивания с объектами класса Thing"
+st[4, 7] = 132
+assert st.rows == 5 and st.cols == 8, "неверные значения атрибутов rows и cols"
 
-del b[0]
-assert b[0].name == 'Python' and b[0].weight == 20, "некорректно отработал оператор del"
+st.remove_data(4, 7)
+assert st.rows == 4 and st.cols == 6, "неверные значения атрибутов rows и cols, возможно, некорректно отработал метод remove_data"
 
+st.remove_data(1, 1)
 try:
-    t = b[2]
+    v = st[1, 1]
+except ValueError:
+    assert True
+else:
+    assert False, "не сгенерировалось исключение ValueError"
+    
+try:
+    st.remove_data(1, 1)
 except IndexError:
     assert True
 else:
     assert False, "не сгенерировалось исключение IndexError"
 
+d = Cell('5')
+assert d.value == '5', "неверное значение атрибута value в объекте класса Cell, возможно, некорректно работает инициализатор класса"
+# st = SparseTable()
+# st.add_data(2, 5, Cell("cell_25"))
+# st.add_data(0, 0, Cell("cell_00"))
+# st[2, 5] = 25 # изменение значения существующей ячейки
+# st[11, 7] = 'cell_117' # создание новой ячейки
+# print(st[0, 0]) # cell_00
+# st.remove_data(2, 5)
+# print(st.rows, st.cols) # 12, 8 - общее число строк и столбцов в таблице
+# # val = st[2, 5] # ValueError
+# st.remove_data(12, 3) # IndexError
+# # 8
+# class Bag:
+#     def __init__(self, max_weight):
+#         self.max_weight = max_weight
+#         self.things = []
+#         self.total_weight = 0
+        
+        
+#     def add_thing(self, thing):
+#         if self.total_weight +  thing.weight > self.max_weight:
+#             raise ValueError('превышен суммарный вес предметов')
+#         self.things.append(thing)
+#         self.total_weight += thing.weight
+
+#     def __getitem__(self, item):
+#         if not isinstance(item, int) or item >= len(self.things):
+#             raise IndexError('неверный индекс')
+#         return self.things[item]
+
+#     def __delitem__(self, key):
+#         del self.things[key]
+
+#     def __setitem__(self, key, value):
+#         if not isinstance(key, int) or key >= len(self.things):
+#             raise IndexError('неверный индекс')
+#         self.total_weight -= self.things[key].weight
+#         if self.total_weight + value.weight > self.max_weight:
+#             raise ValueError('превышен суммарный вес предметов')
+        
+#         self.total_weight += value.weight
+#         self.things[key] = value
+        
+        
+
+# class Thing:
+#     def __init__(self, name, weight):
+#         self.name = name
+#         self.weight = weight
+        
+# b = Bag(700)
+# b.add_thing(Thing('книга', 100))
+# b.add_thing(Thing('носки', 200))
+
+# try:
+#     b.add_thing(Thing('рубашка', 500))
+# except ValueError:
+#     assert True
+# else:
+#     assert False, "не сгенерировалось исключение ValueError"
+
+# assert b[0].name == 'книга' and b[0].weight == 100, "атрибуты name и weight объекта класса Thing принимают неверные значения"
+
+# t = Thing('Python', 20)
+# b[1] = t
+# assert b[1].name == 'Python' and b[1].weight == 20, "неверные значения атрибутов name и weight, возможно, некорректно работает оператор присваивания с объектами класса Thing"
+
+# del b[0]
+# assert b[0].name == 'Python' and b[0].weight == 20, "некорректно отработал оператор del"
+
+# try:
+#     t = b[2]
+# except IndexError:
+#     assert True
+# else:
+#     assert False, "не сгенерировалось исключение IndexError"
+
     
-b = Bag(700)
-b.add_thing(Thing('книга', 100))
-b.add_thing(Thing('носки', 200))
+# b = Bag(700)
+# b.add_thing(Thing('книга', 100))
+# b.add_thing(Thing('носки', 200))
 
-b[0] = Thing('рубашка', 500)
+# b[0] = Thing('рубашка', 500)
 
-try:
-    b[0] = Thing('рубашка', 800)
-except ValueError:
-    assert True
-else:
-    assert False, "не сгенерировалось исключение ValueError при замене предмета в объекте класса Bag по индексу"      
+# try:
+#     b[0] = Thing('рубашка', 800)
+# except ValueError:
+#     assert True
+# else:
+#     assert False, "не сгенерировалось исключение ValueError при замене предмета в объекте класса Bag по индексу"      
 # bag = Bag(1000)
 # bag.add_thing(Thing('книга', 100))
 # bag.add_thing(Thing('носки', 200))
