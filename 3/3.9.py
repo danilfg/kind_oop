@@ -1,46 +1,143 @@
-# 5 
-class Cell:
-    def __init__(self, data=0):
-        self.__data = data
-        
-    @property
-    def data(self):
-        return self.__data
+# 6
+class Matrix:
+    def __init__(self, *args):
+        if len(args) == 3:
+            self.rows = args[0]
+            self.cols = args[1]
+            self.fill_value = args[2]
+            self.matrix = [[self.fill_value for _ in range(self.cols)] for _ in range(self.rows)]
+        else:
+            self.matrix = args[0]
+            
+    @staticmethod
+    def check_matrix(matrix):
+        if not all([len(row)==len(matrix[0]) for row in matrix]):
+            return False
+        for row in matrix:
+            for x in row:
+                if not isinstance(x, (int, float)):
+                    return False
+        return True
     
-    @data.setter
-    def data(self, value):
-        self.__data = value
-    
-    # def __repr__(self):
-    #     return f'{self.__data}'
-        
-class TableValues:
-    def __init__(self, rows, cols, type_data=int):
-        self.rows = rows
-        self.cols = cols
-        self.type_data = type_data
-        self.table = tuple(tuple(Cell(type_data(0)) for _ in range(cols)) for _ in range(rows))
-        
+    def __setattr__(self, key, value):
+            if (key == "fill_value" and not isinstance(value, (int, float))) \
+                or (key in ("rows", "cols") and not isinstance(value, int)):
+                raise TypeError('аргументы rows, cols - целые числа; fill_value - произвольное число')
+            if key == "matrix" and not self.check_matrix(value):
+                raise TypeError('список должен быть прямоугольным, состоящим из чисел')
+            object.__setattr__(self, key, value)
+                
     def __getitem__(self, item):
-        if (item[0] >= self.rows) or (item[1] >= self.cols):
-            raise IndexError('неверный индекс')
-        return self.table[item[0]][item[1]].data
+        if item[0] >= len(self.matrix) or item[1] >= len(self.matrix[0]):
+            raise IndexError('недопустимые значения индексов')
+        return self.matrix[item[0]][item[1]]
     
     def __setitem__(self, key, value):
-        if (key[0] >= self.rows) or (key[1] >= self.cols):
-            raise IndexError('неверный индекс')
-        if not isinstance(value, self.type_data):
-            raise TypeError('неверный тип присваиваемых данных')
-        self.table[key[0]][key[1]].data = value
+        if key[0] >= len(self.matrix) or key[1] >= len(self.matrix[0]):
+            raise IndexError('недопустимые значения индексов')
+        if not isinstance(value, (int, float)):
+            raise TypeError('значения матрицы должны быть числами')
+        self.matrix[key[0]][key[1]] = value
         
-    def __iter__(self):
-        for row in self.table:
-            yield iter(x.data for x in row)
-        
-table = TableValues(34, 12, int)
+    @staticmethod
+    def check_matrix_dimensions(matrix1, matrix2):
+        if len(matrix1) != len(matrix2):
+            return False
+        for row1, row2 in zip(matrix1, matrix2):
+            if len(row1) != len(row2):
+                return False
+        return True
+    
+    def __add__(self, other):
+        res_matrix = []
+        if isinstance(other, (int, float)):
+            for row in self.matrix:
+                res_matrix.append([x + other for x in row])
+        else:
+            if not self.check_matrix_dimensions(self.matrix, other.matrix):
+                raise ValueError('операции возможны только с матрицами равных размеров')
+            for row1, row2 in zip(self.matrix, other.matrix):
+                res_matrix.append([x1 + x2  for x1, x2 in zip(row1, row2)])
+        return Matrix(res_matrix)
 
-table[10, 10] = 10# запись нового значения в ячейку с индексами row, col (индексы отсчитываются с нуля)
-value = table[10, 10] # считывание значения из ячейки с индексами row, col
+    def __sub__(self, other):
+        res_matrix = []
+        if isinstance(other, (int, float)):
+            for row in self.matrix:
+                res_matrix.append([x - other for x in row])
+        else:
+            if not self.check_matrix_dimensions(self.matrix, other.matrix):
+                raise ValueError('операции возможны только с матрицами равных размеров')
+            for row1, row2 in zip(self.matrix, other.matrix):
+                res_matrix.append([x1 - x2  for x1, x2 in zip(row1, row2)])
+        return Matrix(res_matrix)
+
+
+m1 =  Matrix([[1, 2], [3, 4]])
+m2 =  Matrix([[4, 3], [2, 1]])
+
+
+print(m1 + m2) # сложение соответствующих значений элементов матриц m1 и m2
+print(m1 + 10) # сложение соответствующих значений элементов матриц m1 и m2
+print(m1 - m2) # сложение соответствующих значений элементов матриц m1 и m2
+print(m1 - 10) # сложение соответствующих значений элементов матриц m1 и m2
+
+# d = Matrix(2, 2, 2)
+# # print(d.matrix)
+# s = Matrix([[1, 2], [3, 4]])
+# # print(s.matrix)
+# # print(s[1,1])
+# s[1,1] = 100
+# # print(s[1,1])
+
+# print(s + 10)
+# print(s + d)
+
+# print(s - 10)
+# print(s - d)
+# # 5 
+# class Cell:
+#     def __init__(self, data=0):
+#         self.__data = data
+        
+#     @property
+#     def data(self):
+#         return self.__data
+    
+#     @data.setter
+#     def data(self, value):
+#         self.__data = value
+    
+#     # def __repr__(self):
+#     #     return f'{self.__data}'
+        
+# class TableValues:
+#     def __init__(self, rows, cols, type_data=int):
+#         self.rows = rows
+#         self.cols = cols
+#         self.type_data = type_data
+#         self.table = tuple(tuple(Cell(type_data(0)) for _ in range(cols)) for _ in range(rows))
+        
+#     def __getitem__(self, item):
+#         if (item[0] >= self.rows) or (item[1] >= self.cols):
+#             raise IndexError('неверный индекс')
+#         return self.table[item[0]][item[1]].data
+    
+#     def __setitem__(self, key, value):
+#         if (key[0] >= self.rows) or (key[1] >= self.cols):
+#             raise IndexError('неверный индекс')
+#         if not isinstance(value, self.type_data):
+#             raise TypeError('неверный тип присваиваемых данных')
+#         self.table[key[0]][key[1]].data = value
+        
+#     def __iter__(self):
+#         for row in self.table:
+#             yield iter(x.data for x in row)
+        
+# table = TableValues(34, 12, int)
+
+# table[10, 10] = 10# запись нового значения в ячейку с индексами row, col (индексы отсчитываются с нуля)
+# value = table[10, 10] # считывание значения из ячейки с индексами row, col
 # print('value', value)
 # print(table[10, 10])
 # print(table[10, 11])
